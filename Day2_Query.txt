@@ -1,0 +1,783 @@
+
+mysql> select "Hello", 'Hello';
++-------+-------+
+| Hello | Hello |
++-------+-------+
+| Hello | Hello |
++-------+-------+
+1 row in set (0.00 sec)
+
+
+mysql> select version(),database();
++-----------+------------+
+| version() | database() |
++-----------+------------+
+| 8.0.39    | NULL       |
++-----------+------------+
+1 row in set (0.00 sec)
+
+mysql> select "Hello" as col1, 'Hello' as col2;
++-------+-------+
+| col1  | col2  |
++-------+-------+
+| Hello | Hello |
++-------+-------+
+1 row in set (0.00 sec)
+
+mysql> select version() as ver,database() as db;
++--------+------+
+| ver    | db   |
++--------+------+
+| 8.0.39 | NULL |
++--------+------+
+1 row in set (0.00 sec)
+
+mysql> select "Hello", 'Hello', ""Hello"", "'Hello'", ''Hello'';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '"", "'Hello'", ''Hello''' at line 1
+mysql> select "Hello", 'Hello', '"Hello"', "'Hello'", ''Hello'';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '''' at line 1
+mysql> select "Hello", 'Hello', '"Hello"', "'Hello'";
++-------+-------+---------+---------+
+| Hello | Hello | "Hello" | 'Hello' |
++-------+-------+---------+---------+
+| Hello | Hello | "Hello" | 'Hello' |
++-------+-------+---------+---------+
+1 row in set (0.00 sec)
+
+mysql> select "Hello", 'Hello', '"Hello"', "'Hello'", '\'hello';
++-------+-------+---------+---------+--------+
+| Hello | Hello | "Hello" | 'Hello' | 'hello |
++-------+-------+---------+---------+--------+
+| Hello | Hello | "Hello" | 'Hello' | 'hello |
++-------+-------+---------+---------+--------+
+1 row in set (0.00 sec)
+
+mysql> SELECT 'This\nIs\nFour\nLines';
++--------------------+
+| This
+Is
+Four
+Lines |
++--------------------+
+1 row in set (0.00 sec)
+
+
+mysql> select 4+5;
++-----+
+| 4+5 |
++-----+
+|   9 |
++-----+
+1 row in set (0.00 sec)
+
+mysql> select 4+5 as addition;
++----------+
+| addition |
++----------+
+|        9 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select "4"+"5";
++---------+
+| "4"+"5" |
++---------+
+|       9 |
++---------+
+1 row in set (0.00 sec)
+
+mysql> select '4'+'5';
++---------+
+| '4'+'5' |
++---------+
+|       9 |
++---------+
+1 row in set (0.00 sec)
+
+mysql> select 20251001;
++----------+
+| 20251001 |
++----------+
+| 20251001 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select 2025@10@01;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '@10@01' at line 1
+mysql> select Date'2025@10@01';
++------------------+
+| Date'2025@10@01' |
++------------------+
+| 2025-10-01       |
++------------------+
+1 row in set, 1 warning (0.00 sec)
+
+mysql> select Date'2025@13@01';
+ERROR 1525 (HY000): Incorrect DATE value: '2025@13@01'
+mysql> select Date2025@13@01;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '@13@01' at line 1
+mysql> select Date"2025@13@01";
+ERROR 1525 (HY000): Incorrect DATE value: '2025@13@01'
+mysql> select Date"2025@10@01";
++------------------+
+| Date"2025@10@01" |
++------------------+
+| 2025-10-01       |
++------------------+
+1 row in set, 1 warning (0.00 sec)
+
+mysql> show warning;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'warning' at line 1
+mysql> show warning\G
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'warning' at line 1
+mysql> show warnings\G
+*************************** 1. row ***************************
+  Level: Error
+   Code: 1064
+Message: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'warning' at line 1
+1 row in set (0.00 sec)
+
+mysql> show warnings
+    -> ;
++-------+------+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Level | Code | Message                                                                                                                                                   |
++-------+------+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Error | 1064 | You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'warning' at line 1 |
++-------+------+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select Date"20251001";
++----------------+
+| Date"20251001" |
++----------------+
+| 2025-10-01     |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> select Date"251001";
++--------------+
+| Date"251001" |
++--------------+
+| 2025-10-01   |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select Date"711001";
++--------------+
+| Date"711001" |
++--------------+
+| 1971-10-01   |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select Date"701001";
++--------------+
+| Date"701001" |
++--------------+
+| 1970-10-01   |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select Date"691001";
++--------------+
+| Date"691001" |
++--------------+
+| 2069-10-01   |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select Date"001001";
++--------------+
+| Date"001001" |
++--------------+
+| 2000-10-01   |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select true;
++------+
+| true |
++------+
+|    1 |
++------+
+1 row in set (0.00 sec)
+
+mysql> select false;
++-------+
+| false |
++-------+
+|     0 |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select IF(true=1, "True","False");
++----------------------------+
+| IF(true=1, "True","False") |
++----------------------------+
+| True                       |
++----------------------------+
+1 row in set (0.00 sec)
+
+mysql> select IF(true=0, "True","False");
++----------------------------+
+| IF(true=0, "True","False") |
++----------------------------+
+| False                      |
++----------------------------+
+1 row in set (0.00 sec)
+
+mysql> select IF(true=2, "True","False");
++----------------------------+
+| IF(true=2, "True","False") |
++----------------------------+
+| False                      |
++----------------------------+
+1 row in set (0.00 sec)
+
+mysql> select IF(false=2, "True","False");
++-----------------------------+
+| IF(false=2, "True","False") |
++-----------------------------+
+| False                       |
++-----------------------------+
+1 row in set (0.00 sec)
+
+mysql> select IF(false=0, "True","False");
++-----------------------------+
+| IF(false=0, "True","False") |
++-----------------------------+
+| True                        |
++-----------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATABASE();
++------------+
+| DATABASE() |
++------------+
+| NULL       |
++------------+
+1 row in set (0.00 sec)
+
+mysql> CREATE DATABASE DACAUG2025;
+Query OK, 1 row affected (0.03 sec)
+
+mysql> SELECT DATABASE();
++------------+
+| DATABASE() |
++------------+
+| NULL       |
++------------+
+1 row in set (0.00 sec)
+
+mysql> USE DACAUG2025;
+Database changed
+mysql> SELECT DATABASE();
++------------+
+| DATABASE() |
++------------+
+| dacaug2025 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| ccppdata           |
+| dacaug2025         |
+| goprac             |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| testdemo           |
++--------------------+
+8 rows in set (0.01 sec)
+
+mysql> CREATE DATABASE DACAUG2025;
+ERROR 1007 (HY000): Can't create database 'dacaug2025'; database exists
+mysql> create database if not exists dacaug2025;
+Query OK, 1 row affected, 1 warning (0.01 sec)
+
+mysql> show warnings;
++-------+------+-----------------------------------------------------+
+| Level | Code | Message                                             |
++-------+------+-----------------------------------------------------+
+| Note  | 1007 | Can't create database 'dacaug2025'; database exists |
++-------+------+-----------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> create database if not exists dacaug25;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> create database if not exists dacaug25;
+Query OK, 1 row affected, 1 warning (0.00 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| ccppdata           |
+| dacaug2025         |
+| dacaug25           |
+| goprac             |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| testdemo           |
++--------------------+
+9 rows in set (0.00 sec)
+
+mysql> drop database dacaug25;
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| ccppdata           |
+| dacaug2025         |
+| goprac             |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| testdemo           |
++--------------------+
+8 rows in set (0.00 sec)
+
+
+mysql> select @@autocommit;
++--------------+
+| @@autocommit |
++--------------+
+|            1 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> create table students(
+    ->     int id
+    ->     varchar(20) name
+    ->     varchar(10) mob
+    ->
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'int id
+    varchar(20) name
+    varchar(10) mob
+
+)' at line 2
+mysql> create table students(
+    ->     int id,
+    ->     varchar(20) name,
+    ->     varchar(10) mob
+    ->
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'int id,
+    varchar(20) name,
+    varchar(10) mob
+
+)' at line 2
+
+mysql> create table students(
+    ->     id int,
+    ->     name varchar(20),
+    ->     mob varchar(10),
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 5
+
+mysql> create table students(
+    ->     id int,
+    ->     name varchar(20),
+    ->     mob varchar(10)
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> show tables;
++----------------------+
+| Tables_in_dacaug2025 |
++----------------------+
+| students             |
++----------------------+
+1 row in set (0.01 sec)
+
+mysql> select * from students;
+Empty set (0.01 sec)
+
+mysql> rename table students to DacStudents;
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> show tables;
++----------------------+
+| Tables_in_dacaug2025 |
++----------------------+
+| dacstudents          |
++----------------------+
+1 row in set (0.01 sec)
+
+mysql> desc dacstudents;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| id    | int         | YES  |     | NULL    |       |
+| name  | varchar(20) | YES  |     | NULL    |       |
+| mob   | varchar(10) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.04 sec)
+
+mysql> insert into dacstudents values('vipul',1,'1234567');
+ERROR 1366 (HY000): Incorrect integer value: 'vipul' for column 'id' at row 1
+mysql> insert into dacstudents values(1,'vipul','1234567');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from students;
+ERROR 1146 (42S02): Table 'dacaug2025.students' doesn't exist
+mysql> select * from dacstudents;
++------+-------+---------+
+| id   | name  | mob     |
++------+-------+---------+
+|    1 | vipul | 1234567 |
++------+-------+---------+
+1 row in set (0.00 sec)
+
+mysql> insert into dacstudents values(1,'vipul');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into dacstudents(id,name) values(1,'vipul');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into dacstudents(id,name,mobile) values(1,'vipul',"123456789");
+ERROR 1054 (42S22): Unknown column 'mobile' in 'field list'
+mysql> insert into dacstudents(id,name,mob) values(1,'Aniket',"123456789");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into dacstudents(id,mob) values(1,'vipul');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from dacstudents;
++------+--------+-----------+
+| id   | name   | mob       |
++------+--------+-----------+
+|    1 | vipul  | 1234567   |
+|    1 | vipul  | NULL      |
+|    1 | Aniket | 123456789 |
+|    1 | NULL   | vipul     |
++------+--------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> insert into dacstudents values(1,'vipul',1234567);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into dacstudents values(1,'vipul',12345678);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from dacstudents;
++------+--------+-----------+
+| id   | name   | mob       |
++------+--------+-----------+
+|    1 | vipul  | 1234567   |
+|    1 | vipul  | NULL      |
+|    1 | Aniket | 123456789 |
+|    1 | NULL   | vipul     |
+|    1 | vipul  | 1234567   |
+|    1 | vipul  | 12345678  |
++------+--------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> insert into dacstudents values(1,shweta,1234567);
+ERROR 1054 (42S22): Unknown column 'shweta' in 'field list'
+mysql> insert into dacstudents(id, name, mob) values(1,shweta,1234567);
+ERROR 1054 (42S22): Unknown column 'shweta' in 'field list'
+mysql> insert into dacstudents(id, name, mob) values(1,"shweta",1234567);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from dacstudents;
++------+--------+-----------+
+| id   | name   | mob       |
++------+--------+-----------+
+|    1 | vipul  | 1234567   |
+|    1 | vipul  | NULL      |
+|    1 | Aniket | 123456789 |
+|    1 | NULL   | vipul     |
+|    1 | vipul  | 1234567   |
+|    1 | vipul  | 12345678  |
+|    1 | shweta | 1234567   |
++------+--------+-----------+
+7 rows in set (0.00 sec)
+
+mysql> insert into dacstudents values();
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from dacstudents;
++------+--------+-----------+
+| id   | name   | mob       |
++------+--------+-----------+
+|    1 | vipul  | 1234567   |
+|    1 | vipul  | NULL      |
+|    1 | Aniket | 123456789 |
+|    1 | NULL   | vipul     |
+|    1 | vipul  | 1234567   |
+|    1 | vipul  | 12345678  |
+|    1 | shweta | 1234567   |
+| NULL | NULL   | NULL      |
++------+--------+-----------+
+8 rows in set (0.00 sec)
+
+mysql> insert into dacstudentsv values(2, "Shbuham", "12345"),values(3,"Himanshu","12345");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'values(3,"Himanshu","12345")' at line 1
+mysql> insert into dacstudentsv values(2, "Shbuham", "12345"),(3,"Himanshu","12345");
+ERROR 1146 (42S02): Table 'dacaug2025.dacstudentsv' doesn't exist
+mysql> insert into dacstudents values(2, "Shbuham", "12345"),(3,"Himanshu","12345");
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from dacstudents;
++------+----------+-----------+
+| id   | name     | mob       |
++------+----------+-----------+
+|    1 | vipul    | 1234567   |
+|    1 | vipul    | NULL      |
+|    1 | Aniket   | 123456789 |
+|    1 | NULL     | vipul     |
+|    1 | vipul    | 1234567   |
+|    1 | vipul    | 12345678  |
+|    1 | shweta   | 1234567   |
+| NULL | NULL     | NULL      |
+|    2 | Shbuham  | 12345     |
+|    3 | Himanshu | 12345     |
++------+----------+-----------+
+10 rows in set (0.00 sec)
+
+mysql> truncate table dacstudents;
+Query OK, 0 rows affected (0.12 sec)
+
+mysql> select * from dacstudents;
+Empty set (0.01 sec)
+
+mysql> desc dacstudents;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| id    | int         | YES  |     | NULL    |       |
+| name  | varchar(20) | YES  |     | NULL    |       |
+| mob   | varchar(10) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> insert into dacstudents(id, name, mob) values(1,"shweta",1234567);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into dacstudents values(2, "Shbuham", "12345"),(3,"Himanshu","12345");
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from dacstudents;
++------+----------+---------+
+| id   | name     | mob     |
++------+----------+---------+
+|    1 | shweta   | 1234567 |
+|    2 | Shbuham  | 12345   |
+|    3 | Himanshu | 12345   |
++------+----------+---------+
+3 rows in set (0.00 sec)
+
+mysql> truncate database dacaug2025;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'database dacaug2025' at line 1
+mysql> select id from dacstudents;
++------+
+| id   |
++------+
+|    1 |
+|    2 |
+|    3 |
++------+
+3 rows in set (0.00 sec)
+
+mysql> select name from dacstudents;
++----------+
+| name     |
++----------+
+| shweta   |
+| Shbuham  |
+| Himanshu |
++----------+
+3 rows in set (0.00 sec)
+
+mysql> select mobile from dacstudents;
+ERROR 1054 (42S22): Unknown column 'mobile' in 'field list'
+mysql> select mob from dacstudents;
++---------+
+| mob     |
++---------+
+| 1234567 |
+| 12345   |
+| 12345   |
++---------+
+3 rows in set (0.00 sec)
+
+mysql> select mob, id, name from dacstudents;
++---------+------+----------+
+| mob     | id   | name     |
++---------+------+----------+
+| 1234567 |    1 | shweta   |
+| 12345   |    2 | Shbuham  |
+| 12345   |    3 | Himanshu |
++---------+------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select id as PRN , name as Student Name, mob as Mobile Number from dacstudents;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Name, mob as Mobile Number from dacstudents' at line 1
+mysql> select id as PRN , name as Student_Name, mob as Mobile_Number from dacstudents;
++------+--------------+---------------+
+| PRN  | Student_Name | Mobile_Number |
++------+--------------+---------------+
+|    1 | shweta       | 1234567       |
+|    2 | Shbuham      | 12345         |
+|    3 | Himanshu     | 12345         |
++------+--------------+---------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from dacstudents where PRN = 3;
+ERROR 1054 (42S22): Unknown column 'PRN' in 'where clause'
+mysql> select * from dacstudents where id = 3;
++------+----------+-------+
+| id   | name     | mob   |
++------+----------+-------+
+|    3 | Himanshu | 12345 |
++------+----------+-------+
+1 row in set (0.00 sec)
+
+mysql> select * from dacstudents where id = 4;
+Empty set (0.00 sec)
+
+mysql> select * from dacstudents where name = shweta;
+ERROR 1054 (42S22): Unknown column 'shweta' in 'where clause'
+mysql> select * from dacstudents where name = "shweta";
++------+--------+---------+
+| id   | name   | mob     |
++------+--------+---------+
+|    1 | shweta | 1234567 |
++------+--------+---------+
+1 row in set (0.00 sec)
+
+mysql> select * from dacstudents where name = "Shweta";
++------+--------+---------+
+| id   | name   | mob     |
++------+--------+---------+
+|    1 | shweta | 1234567 |
++------+--------+---------+
+1 row in set (0.00 sec)
+
+mysql> insert into dacstudents values(4,"SHWETA","123456");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from dacstudents where id = 4;
++------+--------+--------+
+| id   | name   | mob    |
++------+--------+--------+
+|    4 | SHWETA | 123456 |
++------+--------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from dacstudents;
++------+----------+---------+
+| id   | name     | mob     |
++------+----------+---------+
+|    1 | shweta   | 1234567 |
+|    2 | Shbuham  | 12345   |
+|    3 | Himanshu | 12345   |
+|    4 | SHWETA   | 123456  |
++------+----------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select * from dacstudents where name = "Shweta";
++------+--------+---------+
+| id   | name   | mob     |
++------+--------+---------+
+|    1 | shweta | 1234567 |
+|    4 | SHWETA | 123456  |
++------+--------+---------+
+2 rows in set (0.00 sec)
+
+mysql> update dacstudents set mob=987654321 where id = 5;
+Query OK, 0 rows affected (0.01 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> update dacstudents set mob=987654321 where id = 4;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from dacstudents;
++------+----------+-----------+
+| id   | name     | mob       |
++------+----------+-----------+
+|    1 | shweta   | 1234567   |
+|    2 | Shbuham  | 12345     |
+|    3 | Himanshu | 12345     |
+|    4 | SHWETA   | 987654321 |
++------+----------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> update dacstudents set mob=987654321;
+Query OK, 3 rows affected (0.01 sec)
+Rows matched: 4  Changed: 3  Warnings: 0
+
+mysql> select * from dacstudents;
++------+----------+-----------+
+| id   | name     | mob       |
++------+----------+-----------+
+|    1 | shweta   | 987654321 |
+|    2 | Shbuham  | 987654321 |
+|    3 | Himanshu | 987654321 |
+|    4 | SHWETA   | 987654321 |
++------+----------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> update dacstudents set mob=78965544, name="Shweta" where name="shweta";
+Query OK, 2 rows affected (0.01 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from dacstudents;
++------+----------+-----------+
+| id   | name     | mob       |
++------+----------+-----------+
+|    1 | Shweta   | 78965544  |
+|    2 | Shbuham  | 987654321 |
+|    3 | Himanshu | 987654321 |
+|    4 | Shweta   | 78965544  |
++------+----------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> delete from dacstudents where id = 4;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from dacstudents;
++------+----------+-----------+
+| id   | name     | mob       |
++------+----------+-----------+
+|    1 | Shweta   | 78965544  |
+|    2 | Shbuham  | 987654321 |
+|    3 | Himanshu | 987654321 |
++------+----------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> delete from dacstudents;
+Query OK, 3 rows affected (0.01 sec)
+
+mysql> show tables;
++----------------------+
+| Tables_in_dacaug2025 |
++----------------------+
+| dacstudents          |
++----------------------+
+1 row in set (0.02 sec)
+
+mysql> select * from dacstudents;
+Empty set (0.00 sec)
+
+mysql> drop table dacstudents;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> show tables;
+Empty set (0.01 sec)
+
+mysql>
