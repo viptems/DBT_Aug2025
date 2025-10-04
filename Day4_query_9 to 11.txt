@@ -1,0 +1,935 @@
+Microsoft Windows [Version 10.0.26100.6584]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Vipul>mysql -u dummy -pcdac123 a25
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 28
+Server version: 8.0.39 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| a25                |
+| ccppdata           |
+| dacaug2025         |
+| goprac             |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| testdemo           |
++--------------------+
+9 rows in set (0.00 sec)
+
+mysql> show tables;
++------------------+
+| Tables_in_a25    |
++------------------+
+| courses          |
+| enrollments      |
+| faculty          |
+| stage_roster_raw |
+| student          |
+| students         |
+| team             |
+| v_stage_clean    |
++------------------+
+8 rows in set (0.01 sec)
+
+mysql> select * from student limit 10;
++--------------+-----------------------------+------------+-----------+---------+------------+-------+
+| prn          | full_name                   | dob        | role_code | team_id | faculty_id | grade |
++--------------+-----------------------------+------------+-----------+---------+------------+-------+
+| 250840320001 | Aakash Ashok Kharade ( TL ) | 2002-07-09 | NULL      |       1 |          1 |  9.09 |
+| 250840320002 | Aasif Jamal                 | 2003-12-01 | NULL      |    NULL |       NULL |  5.25 |
+| 250840320003 | Abhishek Anilkumar Borse    | 2000-01-08 | NULL      |    NULL |       NULL |  8.99 |
+| 250840320004 | Abhishek Dasondhi ( AL )    | 2000-05-09 | NULL      |    NULL |       NULL |  9.20 |
+| 250840320005 | Abhishek Narayan Jagtap     | 2001-09-16 | NULL      |    NULL |       NULL |  9.03 |
+| 250840320006 | Abhishek Vilas Gaikwad      | 2003-06-27 | NULL      |    NULL |       NULL |  7.53 |
+| 250840320007 | Adarsh Kumar Chandel ( CL ) | 2000-04-19 | NULL      |    NULL |       NULL |  0.59 |
+| 250840320008 | Adarsh Kushwah              | 2003-01-17 | NULL      |    NULL |       NULL |  0.35 |
+| 250840320009 | Aditya Abhijeet Adhikari    | 2002-05-01 | NULL      |    NULL |       NULL |  9.96 |
+| 250840320010 | Aditya Sachin Korde         | 2002-07-06 | NULL      |    NULL |       NULL |  8.78 |
++--------------+-----------------------------+------------+-----------+---------+------------+-------+
+10 rows in set (0.00 sec)
+
+mysql> select * from student limit 20;
++--------------+-----------------------------------+------------+-----------+---------+------------+-------+
+| prn          | full_name                         | dob        | role_code | team_id | faculty_id | grade |
++--------------+-----------------------------------+------------+-----------+---------+------------+-------+
+| 250840320001 | Aakash Ashok Kharade ( TL )       | 2002-07-09 | NULL      |       1 |          1 |  9.09 |
+| 250840320002 | Aasif Jamal                       | 2003-12-01 | NULL      |    NULL |       NULL |  5.25 |
+| 250840320003 | Abhishek Anilkumar Borse          | 2000-01-08 | NULL      |    NULL |       NULL |  8.99 |
+| 250840320004 | Abhishek Dasondhi ( AL )          | 2000-05-09 | NULL      |    NULL |       NULL |  9.20 |
+| 250840320005 | Abhishek Narayan Jagtap           | 2001-09-16 | NULL      |    NULL |       NULL |  9.03 |
+| 250840320006 | Abhishek Vilas Gaikwad            | 2003-06-27 | NULL      |    NULL |       NULL |  7.53 |
+| 250840320007 | Adarsh Kumar Chandel ( CL )       | 2000-04-19 | NULL      |    NULL |       NULL |  0.59 |
+| 250840320008 | Adarsh Kushwah                    | 2003-01-17 | NULL      |    NULL |       NULL |  0.35 |
+| 250840320009 | Aditya Abhijeet Adhikari          | 2002-05-01 | NULL      |    NULL |       NULL |  9.96 |
+| 250840320010 | Aditya Sachin Korde               | 2002-07-06 | NULL      |    NULL |       NULL |  8.78 |
+| 250840320011 | Afsha Zarreen Sayeed Khan         | 2001-07-28 | NULL      |       2 |          1 |  4.01 |
+| 250840320012 | Ajay Raysing Patil                | 2000-04-30 | NULL      |    NULL |       NULL |  3.71 |
+| 250840320013 | Akanksha Jeevan Puri ( CL )       | 2000-12-06 | NULL      |    NULL |       NULL |  6.53 |
+| 250840320014 | Akanksha Somnath Dhanawade ( AL ) | 2003-08-31 | NULL      |    NULL |       NULL |  1.50 |
+| 250840320015 | Akash Pandurang Kokulwar          | 2003-07-13 | NULL      |    NULL |       NULL |  7.91 |
+| 250840320016 | Akash Raghunath Bhadane           | 2002-08-29 | NULL      |    NULL |       NULL |  5.07 |
+| 250840320017 | Akshay Keshav Balte               | 2002-09-14 | NULL      |    NULL |       NULL |  1.60 |
+| 250840320018 | Amar Balasaheb Toge               | 2001-07-18 | NULL      |    NULL |       NULL |  2.80 |
+| 250840320019 | Amarnath Ambadas Malpuri          | 2003-08-13 | NULL      |    NULL |       NULL |  9.21 |
+| 250840320020 | Amey Arun Parab ( TL )            | 2001-06-08 | NULL      |    NULL |       NULL |  7.63 |
++--------------+-----------------------------------+------------+-----------+---------+------------+-------+
+20 rows in set (0.00 sec)
+
+mysql> select * from faculty;
++------------+-----------------------+-------+-----------+
+| faculty_id | full_name             | email | is_active |
++------------+-----------------------+-------+-----------+
+|          1 | Aditya Kansana        | NULL  |         1 |
+|          2 | Aniket Takmare        | NULL  |         1 |
+|          3 | Manoj More            | NULL  |         1 |
+|          4 | Shilbhushan Khanderao | NULL  |         1 |
+|          5 | Shweta Bhere          | NULL  |         1 |
+|          6 | Vipul Tembulwar       | NULL  |         1 |
++------------+-----------------------+-------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> select full_name from student where Upper(full_name);
+Empty set, 238 warnings (0.01 sec)
+
+mysql> show warnings limit 1;
++---------+------+-----------------------------------------------------------------+
+| Level   | Code | Message                                                         |
++---------+------+-----------------------------------------------------------------+
+| Warning | 1292 | Truncated incorrect DOUBLE value: 'AAKASH ASHOK KHARADE ( TL )' |
++---------+------+-----------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select upper(full_name) from student limit 10;
++-----------------------------+
+| upper(full_name)            |
++-----------------------------+
+| AAKASH ASHOK KHARADE ( TL ) |
+| AASIF JAMAL                 |
+| ABHISHEK ANILKUMAR BORSE    |
+| ABHISHEK DASONDHI ( AL )    |
+| ABHISHEK NARAYAN JAGTAP     |
+| ABHISHEK VILAS GAIKWAD      |
+| ADARSH KUMAR CHANDEL ( CL ) |
+| ADARSH KUSHWAH              |
+| ADITYA ABHIJEET ADHIKARI    |
+| ADITYA SACHIN KORDE         |
++-----------------------------+
+10 rows in set (0.00 sec)
+
+mysql> select upper(full_name,dob) from student limit 10;
+ERROR 1582 (42000): Incorrect parameter count in the call to native function 'upper'
+mysql> select concat(full_Name , dob) from student limit 1;
++---------------------------------------+
+| concat(full_Name , dob)               |
++---------------------------------------+
+| Aakash Ashok Kharade ( TL )2002-07-09 |
++---------------------------------------+
+1 row in set (0.01 sec)
+
+mysql> select concat(full_Name ," ",  dob) from student limit 1;
++----------------------------------------+
+| concat(full_Name ," ",  dob)           |
++----------------------------------------+
+| Aakash Ashok Kharade ( TL ) 2002-07-09 |
++----------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select concat(full_Name) from student limit 1;
++-----------------------------+
+| concat(full_Name)           |
++-----------------------------+
+| Aakash Ashok Kharade ( TL ) |
++-----------------------------+
+1 row in set (0.00 sec)
+
+mysql> select length(full_name) from student limit 1;
++-------------------+
+| length(full_name) |
++-------------------+
+|                27 |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql> select char_length(full_name) from student limit 1;
++------------------------+
+| char_length(full_name) |
++------------------------+
+|                     27 |
++------------------------+
+1 row in set (0.00 sec)
+
+mysql> select left(full_name, 4) from student limit 1;
++--------------------+
+| left(full_name, 4) |
++--------------------+
+| Aaka               |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> select right(full_name, 4) from student limit 1;
++---------------------+
+| right(full_name, 4) |
++---------------------+
+| TL )                |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> select middle(full_name, 4) from student limit 1;
+ERROR 1305 (42000): FUNCTION a25.middle does not exist
+mysql> select left(full_name) from student limit 1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') from student limit 1' at line 1
+mysql> select left(dob,4) from student limit 1;
++-------------+
+| left(dob,4) |
++-------------+
+| 2002        |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select left(dob,5) from student limit 1;
++-------------+
+| left(dob,5) |
++-------------+
+| 2002-       |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select substring(full_name,5,6) from student limit 1;
++--------------------------+
+| substring(full_name,5,6) |
++--------------------------+
+| sh Ash                   |
++--------------------------+
+1 row in set (0.00 sec)
+
+mysql> select substring(full_name,5) from student limit 1;
++-------------------------+
+| substring(full_name,5)  |
++-------------------------+
+| sh Ashok Kharade ( TL ) |
++-------------------------+
+1 row in set (0.00 sec)
+
+mysql> select trim(full_name) from student;
++------------------------------------------+
+| trim(full_name)                          |
++------------------------------------------+
+| Aakash Ashok Kharade ( TL )              |
+| Aasif Jamal                              |
+| Abhishek Anilkumar Borse                 |
+| Abhishek Dasondhi ( AL )                 |
+| Abhishek Narayan Jagtap                  |
+| Abhishek Vilas Gaikwad                   |
+| Adarsh Kumar Chandel ( CL )              |
+| Adarsh Kushwah                           |
+| Aditya Abhijeet Adhikari                 |
+| Aditya Sachin Korde                      |
+| Afsha Zarreen Sayeed Khan                |
+| Ajay Raysing Patil                       |
+| Akanksha Jeevan Puri ( CL )              |
+| Akanksha Somnath Dhanawade ( AL )        |
+| Akash Pandurang Kokulwar                 |
+| Akash Raghunath Bhadane                  |
+| Akshay Keshav Balte                      |
+| Amar Balasaheb Toge                      |
+| Amarnath Ambadas Malpuri                 |
+| Amey Arun Parab ( TL )                   |
+| Amey Shekhar Raut                        |
+| Aniket Bhagwat Sherkar                   |
+| Aniket Hanumant Darade                   |
+| Anirudha Dinesh Shinde                   |
+| Ankita Ashok Kanthe                      |
+| Ankita Yatin Kher                        |
+| Annu Yadav ( AL )                        |
+| Anuj Trivedi ( TL )                      |
+| Anurag More ( CL )                       |
+| Anushka Chavan                           |
+| Apurva Nandkishor Dhonde                 |
+| Aryan Genbhau Gawade ( AL )              |
+| Aryan Manohar Pate                       |
+| Aryan Sunil Shambharkar                  |
+| Asfiya Naveed Ahmed Shaikh ( CCR )       |
+| Asmit Ajay Upganlawar                    |
+| Asmita Vijaykumar Mhetre ( TL )          |
+| Atharva Anil Thumbare                    |
+| Avneesh Dubey                            |
+| Ayush Ranjan ( CL )                      |
+| Bhagyesh Tushar Wani                     |
+| Bhavna Yadav Balpande                    |
+| Bhushan Chandan Dhavan ( TL )            |
+| Bhushan Narendra Attarde                 |
+| Bhushan Vasantrao Thate                  |
+| Chaitali Bhagwat Barhate                 |
+| Chetankumar Badusing Banjara ( AL )      |
+| Chinmay Vijay Bonde ( CL )               |
+| Darshan Suryabhan Gadakh                 |
+| Darshana Sopandas Malewar                |
+| Deepa Sushil Jadhav ( AL )               |
+| Deepra Banerjee                          |
+| Devendra Kakaji Deore ( TL )             |
+| Dhananjay Tansen Shitole                 |
+| Dhanashree Deepak Pawar  ( CL )          |
+| Dhaval Manik Patil                       |
+| Dhiraj Divakar Patil                     |
+| Digvijay Maruti Thanekar                 |
+| Dipak Chandrakant Firake                 |
+| Dipali Amit Vasave                       |
+| Dipti Sampat Akhade                      |
+| Dnyaneshvar Bibhishan Suryavanshi        |
+| Fameshwari                               |
+| Gaurav Anil Patil ( CL )                 |
+| Gaurav Anil Sontakke                     |
+| Gaurav Aniruddha Apte                    |
+| Gaurav Baikunth Nath Mishra ( AL )       |
+| Gaurav Suresh Salunkhe ( TL )            |
+| Gauri Pratul Kolte                       |
+| Goutam Soni                              |
+| Gunjan Pravin Chaudhari                  |
+| Hanuman Bhagwat Jadhav                   |
+| Harshal Vilas Tarmale ( TL )             |
+| Heramb Dilip Shinde                      |
+| Himanshu Dhananjay Patil ( AL )          |
+| Himanshu Jagdish Samrit                  |
+| Hitesh Ravindra Singh Chaudhari          |
+| Hrishikesh Deepak Tappe                  |
+| Isha Anant Puranik                       |
+| Isha Pralhad Gulhane ( CL )              |
+| Ishan Raizada                            |
+| Jaydeep Patidar                          |
+| Kalyanee Ravindra Pachghare              |
+| Kamlini Govardhan Bhasme ( CL )          |
+| Kapil Umakant Katte                      |
+| Kaushal Rajendra Patil ( TL )            |
+| Khetesh Ummedram Choudhary               |
+| Kiran Vishwas Mahajan                    |
+| Komal Kadnor                             |
+| Komal Ramrao Jadhav ( AL )               |
+| Krishna Aditya Chikkala                  |
+| Krushna Vikas Chavan                     |
+| Madhuri Kedarnath Chavan ( CL )          |
+| Manali Sharad Bharati Bhujbal            |
+| Manish Laxmikant Chaudhari               |
+| Mickey Manohar                           |
+| Minal Ashok Kamde ( AL )                 |
+| Mohammad Rehan Ansari                    |
+| Mohammad Salik Zameer Ahmed Mulla ( TL ) |
+| Mohd Allahuddin                          |
+| Mohini Nikhil Kasar                      |
+| Mohit Rahul Sarode                       |
+| Mujahid Jamshed Bagwan                   |
+| Nandini Nitin Rasal                      |
+| Nandini Wasant Wahane ( AL )             |
+| Naushin Yusuf Sayyad ( TL )              |
+| Neha Devidas Patil                       |
+| Neha Nandu Wagh ( CL )                   |
+| Neha Pravin Kothavade                    |
+| Neha Vijay Ahire                         |
+| Nidhi Kumari                             |
+| Niket Devendra Malviya ( TL )            |
+| Nikhil Anil Shingare                     |
+| Nikhil Dubey                             |
+| Nikhil Samadhan Nikam ( CL )             |
+| Nishant Sharad Desle                     |
+| Nutesh Vinod Tajne                       |
+| Om Bhagirath Londhe ( AL )               |
+| Om Santosh Pawar                         |
+| Omkar Pramod Nalawade                    |
+| Parikshit Mahendra Urkande               |
+| Parikshit Vijay Patil                    |
+| Pooja Kundlik Athare                     |
+| Poonam Balaji More ( AL )                |
+| Pradip Prakash Patil                     |
+| Prajakta Manik Kamble                    |
+| Prajwal Rathod ( TL )                    |
+| Pranali Ramesh Mahadik ( CL )            |
+| Pranali Vilas Magar                      |
+| Pranavkumar Sanjay Munot                 |
+| Pranjali Pramod Rane                     |
+| Prasad Sagar Talekar ( AL )              |
+| Prashant Aba Patil                       |
+| Prateek Gupta                            |
+| Prathamesh Sunil Maharnur                |
+| Prathmesh Mane ( CL )                    |
+| Pratik Ashok Avhad ( TL )                |
+| Pratik Kailas Barse                      |
+| Prem Satyanarayan Myana                  |
+| Priyanka Bhausaheb Thange                |
+| Purva Pradeep Thavai                     |
+| Purvesh Ravindra Khandare ( TL )         |
+| Rachana Namdeo Khadse                    |
+| Ragini Yadav                             |
+| Rahul Dhondu Pawar ( AL )                |
+| Raj Jaydev Tangadi                       |
+| Rajat Lonkar ( CL )                      |
+| Ravina Punjarao Gadekar                  |
+| Ritik Gupta                              |
+| Rohini Bhagwatkar                        |
+| Rohit Bhalse                             |
+| Rohit Deshpande                          |
+| Ronak Ravindra Kolhe ( AL )              |
+| Roshan Sanjay Kosare                     |
+| Rugvedi Dilipkumar Wankhede ( CL )       |
+| Rushikesh Sandeep Temkar                 |
+| Rushikesh Vijay Dhavan                   |
+| Ruttik Prakash Hiwase ( TL )             |
+| Rutuja Pravin Gholap                     |
+| Sachin Rajesh Dabewar                    |
+| Sachin Sanjay Waghchaure ( AL )          |
+| Sagar Band                               |
+| Sagar Shyam Udgiri ( TL )                |
+| Sakshi Purushottam Baitule               |
+| Sakshi Sandip Ostwal                     |
+| Sakshi Umesh Chaudhari                   |
+| Saloni                                   |
+| Samarth Ramchandra Burkule ( CL )        |
+| Samiksha Vilas Wagaj                     |
+| Samir Bharati                            |
+| Sanghapal Ishwar Gavhane                 |
+| Sanjukta Sarkar                          |
+| Sanket Kulkarni ( CL )                   |
+| Sanket Purushottam Mandavgane            |
+| Sanket Sanjay Shalukar ( TCR )           |
+| Sanskruti Shankar Dhole                  |
+| Sarthak Satish Sambare                   |
+| Satyajit Tanaji Kadam  ( TL )            |
+| Saurabh Anil Mahajan ( AL )              |
+| Saurabh Pramod Walanj                    |
+| Saurabh Raju Vaidya                      |
+| Shamal Manik Bhujbal                     |
+| Shantanu Laxman Chaudhari                |
+| Shashibhushan Avdhesh Mishra ( AL )      |
+| Shilpa Jayesh Gharat                     |
+| Shital Janardan Sabale                   |
+| Shivanjali Bhanudas Mote ( CL )          |
+| Shraddha Chandrashekhar Hade ( TL )      |
+| Shreya Ajay Pandharipande                |
+| Shreya Raj                               |
+| Shruti Dhanalal Wadile ( AL )            |
+| Shruti Dinkar Jadhav                     |
+| Shubham Chandrakant Ghaware              |
+| Shubham Chandrikapure                    |
+| Shubham Dnyaneshwar Thakur ( TL )        |
+| Shubham Santosh Rokade ( CL )            |
+| Shubham Shriram Chaudhari                |
+| Siddhi Machhindra Adkitte                |
+| Sneha Gorakhnath Bhong                   |
+| Snehal Kailas Kharde                     |
+| Snehal Shivaji Shinde                    |
+| Sofiya Taiyaballi Sutar                  |
+| Soma Vasudev                             |
+| Someshvar Tiwari                         |
+| Soumya Prasad Sahu  ( CL )               |
+| Suchit Prashant Sawant                   |
+| Sudhansu Dalchand Kapgate ( AL )         |
+| Sumit Prabhakar Mote ( TCR )             |
+| Supriya Mahesh Suryawanshi               |
+| Suraj Rawat ( TL )                       |
+| Suyog Avinash Joshi                      |
+| Swapna Sanjay Saste                      |
+| Tanmay Chandrakant Sawant                |
+| Tanmay Mukesh Raut ( CL )                |
+| Tanmay Vasant Salwe ( CCR )              |
+| Tejal Sunil Mahajan                      |
+| Tejas Anil Jadhao                        |
+| Tushar Gajanan Gedam ( AL )              |
+| Tushar Hanmant Rupnavar                  |
+| Tushar Vilas Lahamge ( TL )              |
+| Vaibhav Sanjay Sonawane ( AL )           |
+| Vaishakh Lalchand Malode                 |
+| Vaishnavi Dhanaji Salvi                  |
+| Vaishnavi Dhanraj Pokale                 |
+| Vaishnavi Pramod Pardeshi ( TL )         |
+| Vaishnavi Sanjay Jagtap                  |
+| Varsha Shivaji Matsagar                  |
+| Vasundhara Vitthal Nanaware              |
+| Vedant Ramrao Shiradhonkar ( CL )        |
+| Vedant Suryakant Mali ( AL )             |
+| Vedant Vishwanath Padave                 |
+| Vibhav Vikas Chavan                      |
+| Virag Hote                               |
+| Vrushabh Vyankatesh Bhaskar ( CL )       |
+| Yash Gulabrao Mankumare ( TL )           |
+| Yash Pramod Bambal                       |
+| Yash Sunil Patil                         |
+| Yukta Ravindra Jadhav                    |
++------------------------------------------+
+238 rows in set (0.00 sec)
+
+mysql> select trim(full_name) from student limit 2;
++-----------------------------+
+| trim(full_name)             |
++-----------------------------+
+| Aakash Ashok Kharade ( TL ) |
+| Aasif Jamal                 |
++-----------------------------+
+2 rows in set (0.00 sec)
+
+mysql> select reverse(full_name) from student limit 1;
++-----------------------------+
+| reverse(full_name)          |
++-----------------------------+
+| ) LT ( edarahK kohsA hsakaA |
++-----------------------------+
+1 row in set (0.00 sec)
+
+mysql> select full_name from student limit 1;
++-----------------------------+
+| full_name                   |
++-----------------------------+
+| Aakash Ashok Kharade ( TL ) |
++-----------------------------+
+1 row in set (0.00 sec)
+
+mysql> update student set full_name=reverse(full_name) where prn = 250840320001;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select full_name from student limit 1;
++-----------------------------+
+| full_name                   |
++-----------------------------+
+| ) LT ( edarahK kohsA hsakaA |
++-----------------------------+
+1 row in set (0.00 sec)
+
+mysql> select Locate("LT", full_name) from student limit 1;
++-------------------------+
+| Locate("LT", full_name) |
++-------------------------+
+|                       3 |
++-------------------------+
+1 row in set (0.00 sec)
+
+mysql> select Locate(substring("full_name",5,5), full_name) from student limit 1;
++-----------------------------------------------+
+| Locate(substring("full_name",5,5), full_name) |
++-----------------------------------------------+
+|                                             0 |
++-----------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select Locate(substring(full_name,5,5), full_name) from student limit 1;
++---------------------------------------------+
+| Locate(substring(full_name,5,5), full_name) |
++---------------------------------------------+
+|                                           5 |
++---------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select substring("full_name",5,5);
++----------------------------+
+| substring("full_name",5,5) |
++----------------------------+
+| _name                      |
++----------------------------+
+1 row in set (0.00 sec)
+
+mysql> select Locate("kaa", full_name) from student limit 10;
++--------------------------+
+| Locate("kaa", full_name) |
++--------------------------+
+|                       25 |
+|                        0 |
+|                        0 |
+|                        0 |
+|                        0 |
+|                        0 |
+|                        0 |
+|                        0 |
+|                        0 |
+|                        0 |
++--------------------------+
+10 rows in set (0.00 sec)
+
+mysql> select substring(full_name,5,5);
+ERROR 1054 (42S22): Unknown column 'full_name' in 'field list'
+mysql> select substring(full_name,5,5) from student limit 1;
++--------------------------+
+| substring(full_name,5,5) |
++--------------------------+
+|  ( ed                    |
++--------------------------+
+1 row in set (0.00 sec)
+
+mysql> select Locate("a", full_name) from student limit 10;
++------------------------+
+| Locate("a", full_name) |
++------------------------+
+|                     10 |
+|                      1 |
+|                      1 |
+|                      1 |
+|                      1 |
+|                      1 |
+|                      1 |
+|                      1 |
+|                      1 |
+|                      1 |
++------------------------+
+10 rows in set (0.00 sec)
+
+mysql> select replace(full_name, ") LT (", "( TL )") from student limit 1;
++----------------------------------------+
+| replace(full_name, ") LT (", "( TL )") |
++----------------------------------------+
+| ( TL ) edarahK kohsA hsakaA            |
++----------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select * from student limit 1;
++--------------+-----------------------------+------------+-----------+---------+------------+-------+
+| prn          | full_name                   | dob        | role_code | team_id | faculty_id | grade |
++--------------+-----------------------------+------------+-----------+---------+------------+-------+
+| 250840320001 | ) LT ( edarahK kohsA hsakaA | 2002-07-09 | NULL      |       1 |          1 |  9.09 |
++--------------+-----------------------------+------------+-----------+---------+------------+-------+
+1 row in set (0.00 sec)
+
+mysql> select replace(full_name, ") LT (", "***********") from student limit 1;
++---------------------------------------------+
+| replace(full_name, ") LT (", "***********") |
++---------------------------------------------+
+| *********** edarahK kohsA hsakaA            |
++---------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql>
+mysql>
+mysql> select replace(full_name, ") LT (", "***********") from student limit 10;
++---------------------------------------------+
+| replace(full_name, ") LT (", "***********") |
++---------------------------------------------+
+| *********** edarahK kohsA hsakaA            |
+| Aasif Jamal                                 |
+| Abhishek Anilkumar Borse                    |
+| Abhishek Dasondhi ( AL )                    |
+| Abhishek Narayan Jagtap                     |
+| Abhishek Vilas Gaikwad                      |
+| Adarsh Kumar Chandel ( CL )                 |
+| Adarsh Kushwah                              |
+| Aditya Abhijeet Adhikari                    |
+| Aditya Sachin Korde                         |
++---------------------------------------------+
+10 rows in set (0.00 sec)
+
+mysql> select replace(full_name, "a", "*") from student limit 10;
++------------------------------+
+| replace(full_name, "a", "*") |
++------------------------------+
+| ) LT ( ed*r*hK kohsA hs*k*A  |
+| A*sif J*m*l                  |
+| Abhishek Anilkum*r Borse     |
+| Abhishek D*sondhi ( AL )     |
+| Abhishek N*r*y*n J*gt*p      |
+| Abhishek Vil*s G*ikw*d       |
+| Ad*rsh Kum*r Ch*ndel ( CL )  |
+| Ad*rsh Kushw*h               |
+| Adity* Abhijeet Adhik*ri     |
+| Adity* S*chin Korde          |
++------------------------------+
+10 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql>
+mysql> select now();
++---------------------+
+| now()               |
++---------------------+
+| 2025-10-04 10:15:05 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> select now() from dual;
++---------------------+
+| now()               |
++---------------------+
+| 2025-10-04 10:15:18 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> select curdate();
++------------+
+| curdate()  |
++------------+
+| 2025-10-04 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select time;
+ERROR 1054 (42S22): Unknown column 'time' in 'field list'
+mysql> select time();
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> select curtime();
++-----------+
+| curtime() |
++-----------+
+| 10:17:56  |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select year();
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> select year(dob) from student limit 1;
++-----------+
+| year(dob) |
++-----------+
+|      2002 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select month(dob) from student limit 1;
++------------+
+| month(dob) |
++------------+
+|          7 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select day(dob) from student limit 1;
++----------+
+| day(dob) |
++----------+
+|        9 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select day('20250707') from dual;
++-----------------+
+| day('20250707') |
++-----------------+
+|               7 |
++-----------------+
+1 row in set (0.00 sec)
+
+mysql> select day('20251307') from dual;
++-----------------+
+| day('20251307') |
++-----------------+
+|            NULL |
++-----------------+
+1 row in set, 1 warning (0.00 sec)
+
+mysql> show warning;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'warning' at line 1
+mysql> show warnings;
++-------+------+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Level | Code | Message                                                                                                                                                   |
++-------+------+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Error | 1064 | You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'warning' at line 1 |
++-------+------+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select day('20251307') from dual;
++-----------------+
+| day('20251307') |
++-----------------+
+|            NULL |
++-----------------+
+1 row in set, 1 warning (0.00 sec)
+
+mysql> show warnings;
++---------+------+--------------------------------------+
+| Level   | Code | Message                              |
++---------+------+--------------------------------------+
+| Warning | 1292 | Incorrect datetime value: '20251307' |
++---------+------+--------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select date_format('20251207',%m-%d-%y) from dual;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%m-%d-%y) from dual' at line 1
+mysql> select date_format('20251207','%m-%d-%y') from dual;
++------------------------------------+
+| date_format('20251207','%m-%d-%y') |
++------------------------------------+
+| 12-07-25                           |
++------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select date_format('20251207','%d-%m-%y') from dual;
++------------------------------------+
+| date_format('20251207','%d-%m-%y') |
++------------------------------------+
+| 07-12-25                           |
++------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select date_format('20251207','%dd-%mm-%yyyy') from dual;
++-----------------------------------------+
+| date_format('20251207','%dd-%mm-%yyyy') |
++-----------------------------------------+
+| 07d-12m-25yyy                           |
++-----------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select datediff(now(),dob) from student where prn= 250840320001;
++---------------------+
+| datediff(now(),dob) |
++---------------------+
+|                8488 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> select currnt_timestamp;
+ERROR 1054 (42S22): Unknown column 'currnt_timestamp' in 'field list'
+mysql> select currnt_timestamp();
+ERROR 1305 (42000): FUNCTION a25.currnt_timestamp does not exist
+mysql> select current_timestamp();
++---------------------+
+| current_timestamp() |
++---------------------+
+| 2025-10-04 10:28:57 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> select @@no_zero_date;
+ERROR 1193 (HY000): Unknown system variable 'no_zero_date'
+mysql> select date("000101") from dual;
++----------------+
+| date("000101") |
++----------------+
+| 2000-01-01     |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> select date("700101") from dual;
++----------------+
+| date("700101") |
++----------------+
+| 1970-01-01     |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> select year(date("700101")) from dual;
++----------------------+
+| year(date("700101")) |
++----------------------+
+|                 1970 |
++----------------------+
+1 row in set (0.00 sec)
+
+mysql> select last_day(now()) from dual;
++-----------------+
+| last_day(now()) |
++-----------------+
+| 2025-10-31      |
++-----------------+
+1 row in set (0.00 sec)
+
+mysql> select dayname(last_day(now())) from dual;
++--------------------------+
+| dayname(last_day(now())) |
++--------------------------+
+| Friday                   |
++--------------------------+
+1 row in set (0.00 sec)
+
+mysql> select monthname(year(date("700101"))) from dual;
++---------------------------------+
+| monthname(year(date("700101"))) |
++---------------------------------+
+| NULL                            |
++---------------------------------+
+1 row in set, 1 warning (0.00 sec)
+
+mysql> select monthname(date('700101')) from dual;
++---------------------------+
+| monthname(date('700101')) |
++---------------------------+
+| January                   |
++---------------------------+
+1 row in set (0.00 sec)
+
+mysql> select monthname(date('701301')) from dual;
++---------------------------+
+| monthname(date('701301')) |
++---------------------------+
+| NULL                      |
++---------------------------+
+1 row in set, 1 warning (0.00 sec)
+
+mysql>
+mysql> select * from student limit 10;
++--------------+-----------------------------+------------+-----------+---------+------------+-------+
+| prn          | full_name                   | dob        | role_code | team_id | faculty_id | grade |
++--------------+-----------------------------+------------+-----------+---------+------------+-------+
+| 250840320001 | ) LT ( edarahK kohsA hsakaA | 2002-07-09 | NULL      |       1 |          1 |  9.09 |
+| 250840320002 | Aasif Jamal                 | 2003-12-01 | NULL      |    NULL |       NULL |  5.25 |
+| 250840320003 | Abhishek Anilkumar Borse    | 2000-01-08 | NULL      |    NULL |       NULL |  8.99 |
+| 250840320004 | Abhishek Dasondhi ( AL )    | 2000-05-09 | NULL      |    NULL |       NULL |  9.20 |
+| 250840320005 | Abhishek Narayan Jagtap     | 2001-09-16 | NULL      |    NULL |       NULL |  9.03 |
+| 250840320006 | Abhishek Vilas Gaikwad      | 2003-06-27 | NULL      |    NULL |       NULL |  7.53 |
+| 250840320007 | Adarsh Kumar Chandel ( CL ) | 2000-04-19 | NULL      |    NULL |       NULL |  0.59 |
+| 250840320008 | Adarsh Kushwah              | 2003-01-17 | NULL      |    NULL |       NULL |  0.35 |
+| 250840320009 | Aditya Abhijeet Adhikari    | 2002-05-01 | NULL      |    NULL |       NULL |  9.96 |
+| 250840320010 | Aditya Sachin Korde         | 2002-07-06 | NULL      |    NULL |       NULL |  8.78 |
++--------------+-----------------------------+------------+-----------+---------+------------+-------+
+10 rows in set (0.00 sec)
+
+mysql> select prn, full_name from student where dob between '2001-01-01' and '2003-01-01' limit 10;
++--------------+-----------------------------+
+| prn          | full_name                   |
++--------------+-----------------------------+
+| 250840320001 | ) LT ( edarahK kohsA hsakaA |
+| 250840320005 | Abhishek Narayan Jagtap     |
+| 250840320009 | Aditya Abhijeet Adhikari    |
+| 250840320010 | Aditya Sachin Korde         |
+| 250840320011 | Afsha Zarreen Sayeed Khan   |
+| 250840320016 | Akash Raghunath Bhadane     |
+| 250840320017 | Akshay Keshav Balte         |
+| 250840320018 | Amar Balasaheb Toge         |
+| 250840320020 | Amey Arun Parab ( TL )      |
+| 250840320022 | Aniket Bhagwat Sherkar      |
++--------------+-----------------------------+
+10 rows in set (0.00 sec)
+
+mysql> select prn, full_name from student where dob between '2001-01-01' and '2003-01-01';
++--------------+------------------------------------------+
+| prn          | full_name                                |
++--------------+------------------------------------------+
+| 250840320001 | ) LT ( edarahK kohsA hsakaA              |
+106 rows in set (0.00 sec)
+
+mysql> select prn, full_name from student where dob < "2002" limit 10 ;
+ERROR 1525 (HY000): Incorrect DATE value: '2002'
+mysql> select prn, full_name from student where dob < "20020101" limit 10 ;
++--------------+-----------------------------+
+| prn          | full_name                   |
++--------------+-----------------------------+
+| 250840320003 | Abhishek Anilkumar Borse    |
+| 250840320004 | Abhishek Dasondhi ( AL )    |
+| 250840320005 | Abhishek Narayan Jagtap     |
+| 250840320007 | Adarsh Kumar Chandel ( CL ) |
+| 250840320011 | Afsha Zarreen Sayeed Khan   |
+| 250840320012 | Ajay Raysing Patil          |
+| 250840320013 | Akanksha Jeevan Puri ( CL ) |
+| 250840320018 | Amar Balasaheb Toge         |
+| 250840320020 | Amey Arun Parab ( TL )      |
+| 250840320021 | Amey Shekhar Raut           |
++--------------+-----------------------------+
+10 rows in set (0.00 sec)
+
+mysql> select prn, full_name from student where dob < "20020101";
++--------------+------------------------------------------+
+| prn          | full_name                                |
++--------------+------------------------------------------+
+| 250840320003 | Abhishek Anilkumar Borse                 |
+
+120 rows in set (0.00 sec)
+
+mysql>
