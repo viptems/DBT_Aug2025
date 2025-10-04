@@ -1,0 +1,1643 @@
+mysql> select count(*) from student;
++----------+
+| count(*) |
++----------+
+|      238 |
++----------+
+1 row in set (0.01 sec)
+
+mysql> select count(*) as total number of students from student;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'number of students from student' at line 1
+mysql> select count(*) as total_number_of_students from student;
++--------------------------+
+| total_number_of_students |
++--------------------------+
+|                      238 |
++--------------------------+
+1 row in set (0.00 sec)
+
+mysql> select count(team_id) from student;
++----------------+
+| count(team_id) |
++----------------+
+|             24 |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> select count(faculty_id) from student;
++-------------------+
+| count(faculty_id) |
++-------------------+
+|                24 |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql> select count(faculty_id) from student where faculty_id=1;
++-------------------+
+| count(faculty_id) |
++-------------------+
+|                 4 |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql> select full_name , count(faculty_id) from student where faculty_id=1;
+ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'a25.student.full_name'; this is incompatible with sql_mode=only_full_group_by
+mysql> select full_name and count(faculty_id) from student where faculty_id=1;
+ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'a25.student.full_name'; this is incompatible with sql_mode=only_full_group_by
+mysql> select sum(grade) from student;
++------------+
+| sum(grade) |
++------------+
+|    1245.65 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select sum(prn) , sum(grade) as grade from student limit 2;
++----------------+---------+
+| sum(prn)       | grade   |
++----------------+---------+
+| 59699996188441 | 1245.65 |
++----------------+---------+
+1 row in set (0.00 sec)
+
+mysql> select sum(prn) , sum(grade) as grade from student;
++----------------+---------+
+| sum(prn)       | grade   |
++----------------+---------+
+| 59699996188441 | 1245.65 |
++----------------+---------+
+1 row in set (0.00 sec)
+
+mysql> select sum(prn) , sum(grade), count(prn) as grade from student;
++----------------+------------+-------+
+| sum(prn)       | sum(grade) | grade |
++----------------+------------+-------+
+| 59699996188441 |    1245.65 |   238 |
++----------------+------------+-------+
+1 row in set (0.00 sec)
+
+mysql> select avg(grade) from student;
++------------+
+| avg(grade) |
++------------+
+|   5.233824 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select max(grade) from student;
++------------+
+| max(grade) |
++------------+
+|       9.96 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select min(grade) from student;
++------------+
+| min(grade) |
++------------+
+|       0.08 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select min(dob) from student;
++------------+
+| min(dob)   |
++------------+
+| 2000-01-08 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select max(dob) from student;
++------------+
+| max(dob)   |
++------------+
+| 2003-12-27 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select avg(dob) from student;
++---------------+
+| avg(dob)      |
++---------------+
+| 20015717.0294 |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select * from student limit 10;
++--------------+-----------------------------+------------+-----------+---------+------------+-------+
+| prn          | full_name                   | dob        | role_code | team_id | faculty_id | grade |
++--------------+-----------------------------+------------+-----------+---------+------------+-------+
+| 250840320001 | ) LT ( edarahK kohsA hsakaA | 2002-07-09 | NULL      |       1 |          1 |  9.09 |
+| 250840320002 | Aasif Jamal                 | 2003-12-01 | NULL      |    NULL |       NULL |  5.25 |
+| 250840320003 | Abhishek Anilkumar Borse    | 2000-01-08 | NULL      |    NULL |       NULL |  8.99 |
+| 250840320004 | Abhishek Dasondhi ( AL )    | 2000-05-09 | NULL      |    NULL |       NULL |  9.20 |
+| 250840320005 | Abhishek Narayan Jagtap     | 2001-09-16 | NULL      |    NULL |       NULL |  9.03 |
+| 250840320006 | Abhishek Vilas Gaikwad      | 2003-06-27 | NULL      |    NULL |       NULL |  7.53 |
+| 250840320007 | Adarsh Kumar Chandel ( CL ) | 2000-04-19 | NULL      |    NULL |       NULL |  0.59 |
+| 250840320008 | Adarsh Kushwah              | 2003-01-17 | NULL      |    NULL |       NULL |  0.35 |
+| 250840320009 | Aditya Abhijeet Adhikari    | 2002-05-01 | NULL      |    NULL |       NULL |  9.96 |
+| 250840320010 | Aditya Sachin Korde         | 2002-07-06 | NULL      |    NULL |       NULL |  8.78 |
++--------------+-----------------------------+------------+-----------+---------+------------+-------+
+10 rows in set (0.00 sec)
+
+mysql> select max(grade), min(max) from student;
+ERROR 1054 (42S22): Unknown column 'max' in 'field list'
+mysql> select max(grade), min(grade) from student;
++------------+------------+
+| max(grade) | min(grade) |
++------------+------------+
+|       9.96 |       0.08 |
++------------+------------+
+1 row in set (0.00 sec)
+
+mysql> select full_name, max(grade) from student where grade=max(grade);
+ERROR 1111 (HY000): Invalid use of group function
+mysql> select full_name from student where grade=max(grade);
+ERROR 1111 (HY000): Invalid use of group function
+mysql> select distinct full_name from student;
++------------------------------------------+
+| full_name                                |
++------------------------------------------+
+| ) LT ( edarahK kohsA hsakaA              |
+| Aasif Jamal                              |
+| Abhishek Anilkumar Borse                 |
+| Abhishek Dasondhi ( AL )                 |
+| Abhishek Narayan Jagtap                  |
+| Abhishek Vilas Gaikwad                   |
+| Adarsh Kumar Chandel ( CL )              |
+| Adarsh Kushwah                           |
+| Aditya Abhijeet Adhikari                 |
+| Aditya Sachin Korde                      |
+| Afsha Zarreen Sayeed Khan                |
+| Ajay Raysing Patil                       |
+| Akanksha Jeevan Puri ( CL )              |
+| Akanksha Somnath Dhanawade ( AL )        |
+| Akash Pandurang Kokulwar                 |
+| Akash Raghunath Bhadane                  |
+| Akshay Keshav Balte                      |
+| Amar Balasaheb Toge                      |
+| Amarnath Ambadas Malpuri                 |
+| Amey Arun Parab ( TL )                   |
+| Amey Shekhar Raut                        |
+| Aniket Bhagwat Sherkar                   |
+| Aniket Hanumant Darade                   |
+| Anirudha Dinesh Shinde                   |
+| Ankita Ashok Kanthe                      |
+| Ankita Yatin Kher                        |
+| Annu Yadav ( AL )                        |
+| Anuj Trivedi ( TL )                      |
+| Anurag More ( CL )                       |
+| Anushka Chavan                           |
+| Apurva Nandkishor Dhonde                 |
+| Aryan Genbhau Gawade ( AL )              |
+| Aryan Manohar Pate                       |
+| Aryan Sunil Shambharkar                  |
+| Asfiya Naveed Ahmed Shaikh ( CCR )       |
+| Asmit Ajay Upganlawar                    |
+| Asmita Vijaykumar Mhetre ( TL )          |
+| Atharva Anil Thumbare                    |
+| Avneesh Dubey                            |
+| Ayush Ranjan ( CL )                      |
+| Bhagyesh Tushar Wani                     |
+| Bhavna Yadav Balpande                    |
+| Bhushan Chandan Dhavan ( TL )            |
+| Bhushan Narendra Attarde                 |
+| Bhushan Vasantrao Thate                  |
+| Chaitali Bhagwat Barhate                 |
+| Chetankumar Badusing Banjara ( AL )      |
+| Chinmay Vijay Bonde ( CL )               |
+| Darshan Suryabhan Gadakh                 |
+| Darshana Sopandas Malewar                |
+| Deepa Sushil Jadhav ( AL )               |
+| Deepra Banerjee                          |
+| Devendra Kakaji Deore ( TL )             |
+| Dhananjay Tansen Shitole                 |
+| Dhanashree Deepak Pawar  ( CL )          |
+| Dhaval Manik Patil                       |
+| Dhiraj Divakar Patil                     |
+| Digvijay Maruti Thanekar                 |
+| Dipak Chandrakant Firake                 |
+| Dipali Amit Vasave                       |
+| Dipti Sampat Akhade                      |
+| Dnyaneshvar Bibhishan Suryavanshi        |
+| Fameshwari                               |
+| Gaurav Anil Patil ( CL )                 |
+| Gaurav Anil Sontakke                     |
+| Gaurav Aniruddha Apte                    |
+| Gaurav Baikunth Nath Mishra ( AL )       |
+| Gaurav Suresh Salunkhe ( TL )            |
+| Gauri Pratul Kolte                       |
+| Goutam Soni                              |
+| Gunjan Pravin Chaudhari                  |
+| Hanuman Bhagwat Jadhav                   |
+| Harshal Vilas Tarmale ( TL )             |
+| Heramb Dilip Shinde                      |
+| Himanshu Dhananjay Patil ( AL )          |
+| Himanshu Jagdish Samrit                  |
+| Hitesh Ravindra Singh Chaudhari          |
+| Hrishikesh Deepak Tappe                  |
+| Isha Anant Puranik                       |
+| Isha Pralhad Gulhane ( CL )              |
+| Ishan Raizada                            |
+| Jaydeep Patidar                          |
+| Kalyanee Ravindra Pachghare              |
+| Kamlini Govardhan Bhasme ( CL )          |
+| Kapil Umakant Katte                      |
+| Kaushal Rajendra Patil ( TL )            |
+| Khetesh Ummedram Choudhary               |
+| Kiran Vishwas Mahajan                    |
+| Komal Kadnor                             |
+| Komal Ramrao Jadhav ( AL )               |
+| Krishna Aditya Chikkala                  |
+| Krushna Vikas Chavan                     |
+| Madhuri Kedarnath Chavan ( CL )          |
+| Manali Sharad Bharati Bhujbal            |
+| Manish Laxmikant Chaudhari               |
+| Mickey Manohar                           |
+| Minal Ashok Kamde ( AL )                 |
+| Mohammad Rehan Ansari                    |
+| Mohammad Salik Zameer Ahmed Mulla ( TL ) |
+| Mohd Allahuddin                          |
+| Mohini Nikhil Kasar                      |
+| Mohit Rahul Sarode                       |
+| Mujahid Jamshed Bagwan                   |
+| Nandini Nitin Rasal                      |
+| Nandini Wasant Wahane ( AL )             |
+| Naushin Yusuf Sayyad ( TL )              |
+| Neha Devidas Patil                       |
+| Neha Nandu Wagh ( CL )                   |
+| Neha Pravin Kothavade                    |
+| Neha Vijay Ahire                         |
+| Nidhi Kumari                             |
+| Niket Devendra Malviya ( TL )            |
+| Nikhil Anil Shingare                     |
+| Nikhil Dubey                             |
+| Nikhil Samadhan Nikam ( CL )             |
+| Nishant Sharad Desle                     |
+| Nutesh Vinod Tajne                       |
+| Om Bhagirath Londhe ( AL )               |
+| Om Santosh Pawar                         |
+| Omkar Pramod Nalawade                    |
+| Parikshit Mahendra Urkande               |
+| Parikshit Vijay Patil                    |
+| Pooja Kundlik Athare                     |
+| Poonam Balaji More ( AL )                |
+| Pradip Prakash Patil                     |
+| Prajakta Manik Kamble                    |
+| Prajwal Rathod ( TL )                    |
+| Pranali Ramesh Mahadik ( CL )            |
+| Pranali Vilas Magar                      |
+| Pranavkumar Sanjay Munot                 |
+| Pranjali Pramod Rane                     |
+| Prasad Sagar Talekar ( AL )              |
+| Prashant Aba Patil                       |
+| Prateek Gupta                            |
+| Prathamesh Sunil Maharnur                |
+| Prathmesh Mane ( CL )                    |
+| Pratik Ashok Avhad ( TL )                |
+| Pratik Kailas Barse                      |
+| Prem Satyanarayan Myana                  |
+| Priyanka Bhausaheb Thange                |
+| Purva Pradeep Thavai                     |
+| Purvesh Ravindra Khandare ( TL )         |
+| Rachana Namdeo Khadse                    |
+| Ragini Yadav                             |
+| Rahul Dhondu Pawar ( AL )                |
+| Raj Jaydev Tangadi                       |
+| Rajat Lonkar ( CL )                      |
+| Ravina Punjarao Gadekar                  |
+| Ritik Gupta                              |
+| Rohini Bhagwatkar                        |
+| Rohit Bhalse                             |
+| Rohit Deshpande                          |
+| Ronak Ravindra Kolhe ( AL )              |
+| Roshan Sanjay Kosare                     |
+| Rugvedi Dilipkumar Wankhede ( CL )       |
+| Rushikesh Sandeep Temkar                 |
+| Rushikesh Vijay Dhavan                   |
+| Ruttik Prakash Hiwase ( TL )             |
+| Rutuja Pravin Gholap                     |
+| Sachin Rajesh Dabewar                    |
+| Sachin Sanjay Waghchaure ( AL )          |
+| Sagar Band                               |
+| Sagar Shyam Udgiri ( TL )                |
+| Sakshi Purushottam Baitule               |
+| Sakshi Sandip Ostwal                     |
+| Sakshi Umesh Chaudhari                   |
+| Saloni                                   |
+| Samarth Ramchandra Burkule ( CL )        |
+| Samiksha Vilas Wagaj                     |
+| Samir Bharati                            |
+| Sanghapal Ishwar Gavhane                 |
+| Sanjukta Sarkar                          |
+| Sanket Kulkarni ( CL )                   |
+| Sanket Purushottam Mandavgane            |
+| Sanket Sanjay Shalukar ( TCR )           |
+| Sanskruti Shankar Dhole                  |
+| Sarthak Satish Sambare                   |
+| Satyajit Tanaji Kadam  ( TL )            |
+| Saurabh Anil Mahajan ( AL )              |
+| Saurabh Pramod Walanj                    |
+| Saurabh Raju Vaidya                      |
+| Shamal Manik Bhujbal                     |
+| Shantanu Laxman Chaudhari                |
+| Shashibhushan Avdhesh Mishra ( AL )      |
+| Shilpa Jayesh Gharat                     |
+| Shital Janardan Sabale                   |
+| Shivanjali Bhanudas Mote ( CL )          |
+| Shraddha Chandrashekhar Hade ( TL )      |
+| Shreya Ajay Pandharipande                |
+| Shreya Raj                               |
+| Shruti Dhanalal Wadile ( AL )            |
+| Shruti Dinkar Jadhav                     |
+| Shubham Chandrakant Ghaware              |
+| Shubham Chandrikapure                    |
+| Shubham Dnyaneshwar Thakur ( TL )        |
+| Shubham Santosh Rokade ( CL )            |
+| Shubham Shriram Chaudhari                |
+| Siddhi Machhindra Adkitte                |
+| Sneha Gorakhnath Bhong                   |
+| Snehal Kailas Kharde                     |
+| Snehal Shivaji Shinde                    |
+| Sofiya Taiyaballi Sutar                  |
+| Soma Vasudev                             |
+| Someshvar Tiwari                         |
+| Soumya Prasad Sahu  ( CL )               |
+| Suchit Prashant Sawant                   |
+| Sudhansu Dalchand Kapgate ( AL )         |
+| Sumit Prabhakar Mote ( TCR )             |
+| Supriya Mahesh Suryawanshi               |
+| Suraj Rawat ( TL )                       |
+| Suyog Avinash Joshi                      |
+| Swapna Sanjay Saste                      |
+| Tanmay Chandrakant Sawant                |
+| Tanmay Mukesh Raut ( CL )                |
+| Tanmay Vasant Salwe ( CCR )              |
+| Tejal Sunil Mahajan                      |
+| Tejas Anil Jadhao                        |
+| Tushar Gajanan Gedam ( AL )              |
+| Tushar Hanmant Rupnavar                  |
+| Tushar Vilas Lahamge ( TL )              |
+| Vaibhav Sanjay Sonawane ( AL )           |
+| Vaishakh Lalchand Malode                 |
+| Vaishnavi Dhanaji Salvi                  |
+| Vaishnavi Dhanraj Pokale                 |
+| Vaishnavi Pramod Pardeshi ( TL )         |
+| Vaishnavi Sanjay Jagtap                  |
+| Varsha Shivaji Matsagar                  |
+| Vasundhara Vitthal Nanaware              |
+| Vedant Ramrao Shiradhonkar ( CL )        |
+| Vedant Suryakant Mali ( AL )             |
+| Vedant Vishwanath Padave                 |
+| Vibhav Vikas Chavan                      |
+| Virag Hote                               |
+| Vrushabh Vyankatesh Bhaskar ( CL )       |
+| Yash Gulabrao Mankumare ( TL )           |
+| Yash Pramod Bambal                       |
+| Yash Sunil Patil                         |
+| Yukta Ravindra Jadhav                    |
++------------------------------------------+
+238 rows in set (0.00 sec)
+
+mysql> select distinct grade from student;
++-------+
+| grade |
++-------+
+|  9.09 |
+|  5.25 |
+|  8.99 |
+|  9.20 |
+|  9.03 |
+|  7.53 |
+|  0.59 |
+|  0.35 |
+|  9.96 |
+|  8.78 |
+|  4.01 |
+|  3.71 |
+|  6.53 |
+|  1.50 |
+|  7.91 |
+|  5.07 |
+|  1.60 |
+|  2.80 |
+|  9.21 |
+|  7.63 |
+|  0.55 |
+|  9.84 |
+|  8.17 |
+|  8.23 |
+|  6.65 |
+|  8.56 |
+|  2.86 |
+|  8.63 |
+|  4.55 |
+|  6.86 |
+|  0.67 |
+|  2.77 |
+|  1.82 |
+|  0.80 |
+|  8.54 |
+|  0.32 |
+|  5.95 |
+|  8.80 |
+|  6.17 |
+|  4.44 |
+|  3.69 |
+|  5.14 |
+|  4.62 |
+|  7.67 |
+|  4.51 |
+|  9.54 |
+|  4.14 |
+|  2.11 |
+|  8.12 |
+|  4.26 |
+|  6.94 |
+|  1.94 |
+|  8.88 |
+|  8.59 |
+|  6.31 |
+|  5.76 |
+|  9.87 |
+|  2.05 |
+|  0.68 |
+|  7.23 |
+|  4.11 |
+|  8.87 |
+|  2.01 |
+|  3.45 |
+|  1.23 |
+|  5.81 |
+|  5.35 |
+|  9.31 |
+|  0.52 |
+|  4.67 |
+|  1.79 |
+|  4.94 |
+|  9.35 |
+|  1.90 |
+|  1.45 |
+|  1.54 |
+|  3.38 |
+|  2.25 |
+|  1.11 |
+|  6.99 |
+|  2.90 |
+|  3.52 |
+|  8.93 |
+|  4.09 |
+|  3.67 |
+|  6.06 |
+|  8.37 |
+|  3.90 |
+|  4.38 |
+|  0.23 |
+|  8.01 |
+|  9.34 |
+|  2.66 |
+|  5.28 |
+|  8.45 |
+|  6.38 |
+|  6.57 |
+|  8.82 |
+|  2.99 |
+|  8.50 |
+|  3.51 |
+|  2.06 |
+|  9.75 |
+|  2.58 |
+|  0.60 |
+|  2.00 |
+|  8.20 |
+|  4.98 |
+|  0.30 |
+|  6.58 |
+|  1.99 |
+|  0.22 |
+|  5.13 |
+|  5.00 |
+|  9.60 |
+|  3.01 |
+|  6.23 |
+|  1.89 |
+|  3.10 |
+|  9.85 |
+|  9.92 |
+|  0.08 |
+|  0.63 |
+|  2.62 |
+|  4.39 |
+|  4.12 |
+|  7.40 |
+|  4.63 |
+|  0.97 |
+|  0.94 |
+|  1.80 |
+|  5.46 |
+|  8.77 |
+|  7.48 |
+|  1.08 |
+|  2.95 |
+|  8.83 |
+|  9.55 |
+|  1.24 |
+|  7.54 |
+|  7.41 |
+|  5.01 |
+|  2.85 |
+|  7.45 |
+|  9.65 |
+|  5.92 |
+|  0.62 |
+|  4.90 |
+|  8.43 |
+|  1.97 |
+|  5.06 |
+|  0.81 |
+|  1.91 |
+|  2.93 |
+|  8.92 |
+|  5.80 |
+|  2.24 |
+|  3.80 |
+|  2.30 |
+|  0.10 |
+|  3.61 |
+|  7.74 |
+|  7.85 |
+|  6.04 |
+|  6.64 |
+|  5.11 |
+|  5.60 |
+|  2.69 |
+|  6.66 |
+|  5.23 |
+|  6.14 |
+|  5.03 |
+|  6.74 |
+|  8.62 |
+|  8.41 |
+|  2.32 |
+|  1.07 |
+|  8.38 |
+|  8.67 |
+|  8.25 |
+|  5.21 |
+|  1.31 |
+|  0.90 |
+|  9.40 |
+|  6.30 |
+|  3.28 |
+|  7.81 |
+|  6.47 |
+|  8.91 |
+|  9.25 |
+|  9.45 |
+|  9.51 |
+|  7.51 |
+|  9.94 |
+|  7.16 |
+|  6.00 |
+|  7.05 |
+|  1.73 |
+|  7.47 |
+|  2.17 |
+|  5.73 |
+|  3.32 |
+|  9.42 |
+|  7.11 |
+|  7.32 |
+|  4.28 |
+|  5.67 |
+|  5.52 |
+|  0.57 |
++-------+
+209 rows in set (0.00 sec)
+
+mysql> select * from team;
++---------+---------+-------------------+
+| team_id | team_no | team_name         |
++---------+---------+-------------------+
+|       1 |       1 | Logic Legends     |
+|       2 |       2 | DEVdas            |
+|       3 |       3 | AlphaCoder        |
+|       4 |       4 | Dacengers         |
+|       5 |       5 | TechSpirits       |
+|       6 |       6 | Bug Brahmas       |
+|       7 |       7 | Ekalavya          |
+|       8 |       8 | CodeStructs       |
+|       9 |       9 | Cyber_Shakti      |
+|      10 |      10 | AlgoVeer          |
+|      11 |      11 | StackNova         |
+|      12 |      12 | Super 10          |
+|      13 |      13 | StackOfTen        |
+|      14 |      14 | CodeRaptors       |
+|      15 |      15 | Access Modifiers  |
+|      16 |      16 | CodeBlooded       |
+|      17 |      17 | sa_Algoholics     |
+|      18 |      18 | Phoenix           |
+|      19 |      19 | TechUdaan         |
+|      20 |      20 | Runtime Rebels    |
+|      21 |      21 | Binary 2 Infinity |
+|      22 |      22 | Binary Bandits    |
+|      23 |      23 | Algo-Warriors     |
+|      24 |      24 | Code-Mafia        |
++---------+---------+-------------------+
+24 rows in set (0.00 sec)
+
+mysql> update table team set team_name="code-mafia" where team_no=23;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table team set team_name="code-mafia" where team_no=23' at line 1
+mysql> update team set team_name="code-mafia" where team_no=23;
+ERROR 1062 (23000): Duplicate entry 'code-mafia' for key 'team.uq_team_name'
+mysql> select distinct faculty_id from student;
++------------+
+| faculty_id |
++------------+
+|       NULL |
+|          1 |
+|          2 |
+|          3 |
+|          4 |
+|          5 |
+|          6 |
++------------+
+7 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> desc team;
++-----------+--------------+------+-----+---------+----------------+
+| Field     | Type         | Null | Key | Default | Extra          |
++-----------+--------------+------+-----+---------+----------------+
+| team_id   | int          | NO   | PRI | NULL    | auto_increment |
+| team_no   | int          | NO   | UNI | NULL    |                |
+| team_name | varchar(120) | NO   | UNI | NULL    |                |
++-----------+--------------+------+-----+---------+----------------+
+3 rows in set (0.01 sec)
+
+mysql> desc student;
++------------+----------------------------------+------+-----+---------+-------+
+| Field      | Type                             | Null | Key | Default | Extra |
++------------+----------------------------------+------+-----+---------+-------+
+| prn        | bigint                           | NO   | PRI | NULL    |       |
+| full_name  | varchar(160)                     | NO   |     | NULL    |       |
+| dob        | date                             | YES  |     | NULL    |       |
+| role_code  | enum('TL','AL','CL','CCR','TCR') | YES  |     | NULL    |       |
+| team_id    | int                              | YES  | MUL | NULL    |       |
+| faculty_id | int                              | YES  | MUL | NULL    |       |
+| grade      | decimal(3,2)                     | YES  |     | NULL    |       |
++------------+----------------------------------+------+-----+---------+-------+
+7 rows in set (0.01 sec)
+
+mysql> desc faculty;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| faculty_id | int          | NO   | PRI | NULL    | auto_increment |
+| full_name  | varchar(120) | NO   | UNI | NULL    |                |
+| email      | varchar(160) | YES  | UNI | NULL    |                |
+| is_active  | tinyint(1)   | NO   |     | 1       |                |
++------------+--------------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> select full_name , team_name from student inner join team on team_id = team_id;
+ERROR 1052 (23000): Column 'team_id' in on clause is ambiguous
+mysql> select s.full_name , s.team_name from student s inner join team t on team_id = team_id;
+ERROR 1054 (42S22): Unknown column 's.team_name' in 'field list'
+mysql> select s.full_name , t.team_name from student s inner join team t on s.team_id = t.team_id;
++---------------------------------+-------------------+
+| full_name                       | team_name         |
++---------------------------------+-------------------+
+| Purva Pradeep Thavai            | Access Modifiers  |
+| Vaibhav Sanjay Sonawane ( AL )  | Algo-Warriors     |
+| Krishna Aditya Chikkala         | AlgoVeer          |
+| Amey Shekhar Raut               | AlphaCoder        |
+| Snehal Shivaji Shinde           | Binary 2 Infinity |
+| Suyog Avinash Joshi             | Binary Bandits    |
+| Deepa Sushil Jadhav ( AL )      | Bug Brahmas       |
+| Vedant Suryakant Mali ( AL )    | Code-Mafia        |
+| Rohit Bhalse                    | CodeBlooded       |
+| Pranjali Pramod Rane            | CodeRaptors       |
+| Gunjan Pravin Chaudhari         | CodeStructs       |
+| Ishan Raizada                   | Cyber_Shakti      |
+| Apurva Nandkishor Dhonde        | Dacengers         |
+| Afsha Zarreen Sayeed Khan       | DEVdas            |
+| Dipti Sampat Akhade             | Ekalavya          |
+| ) LT ( edarahK kohsA hsakaA     | Logic Legends     |
+| Sanghapal Ishwar Gavhane        | Phoenix           |
+| Shruti Dhanalal Wadile ( AL )   | Runtime Rebels    |
+| Sachin Sanjay Waghchaure ( AL ) | sa_Algoholics     |
+| Mohini Nikhil Kasar             | StackNova         |
+| Parikshit Mahendra Urkande      | StackOfTen        |
+| Nidhi Kumari                    | Super 10          |
+| Bhagyesh Tushar Wani            | TechSpirits       |
+| Saurabh Raju Vaidya             | TechUdaan         |
++---------------------------------+-------------------+
+24 rows in set (0.00 sec)
+
+mysql> select s.full_name , t.faculty_name from student s inner join faculty t on s.team_id = t.faculty_id;
+ERROR 1054 (42S22): Unknown column 't.faculty_name' in 'field list'
+mysql> select s.full_name , t.full_name from student s inner join faculty t on s.team_id = t.faculty_id;
++-----------------------------+-----------------------+
+| full_name                   | full_name             |
++-----------------------------+-----------------------+
+| ) LT ( edarahK kohsA hsakaA | Aditya Kansana        |
+| Afsha Zarreen Sayeed Khan   | Aniket Takmare        |
+| Amey Shekhar Raut           | Manoj More            |
+| Apurva Nandkishor Dhonde    | Shilbhushan Khanderao |
+| Bhagyesh Tushar Wani        | Shweta Bhere          |
+| Deepa Sushil Jadhav ( AL )  | Vipul Tembulwar       |
++-----------------------------+-----------------------+
+6 rows in set (0.00 sec)
+
+mysql> select s.full_name , t.full_name from student s inner join faculty t on t.team_id = s.faculty_id;
+ERROR 1054 (42S22): Unknown column 't.team_id' in 'on clause'
+mysql> select s.full_name , t.full_name from student s inner join faculty t on s.faculty_id=t.faculty_id;
++---------------------------------+-----------------------+
+| full_name                       | full_name             |
++---------------------------------+-----------------------+
+| ) LT ( edarahK kohsA hsakaA     | Aditya Kansana        |
+| Afsha Zarreen Sayeed Khan       | Aditya Kansana        |
+| Parikshit Mahendra Urkande      | Aditya Kansana        |
+| Pranjali Pramod Rane            | Aditya Kansana        |
+| Amey Shekhar Raut               | Aniket Takmare        |
+| Apurva Nandkishor Dhonde        | Aniket Takmare        |
+| Purva Pradeep Thavai            | Aniket Takmare        |
+| Rohit Bhalse                    | Aniket Takmare        |
+| Bhagyesh Tushar Wani            | Manoj More            |
+| Deepa Sushil Jadhav ( AL )      | Manoj More            |
+| Sachin Sanjay Waghchaure ( AL ) | Manoj More            |
+| Sanghapal Ishwar Gavhane        | Manoj More            |
+| Dipti Sampat Akhade             | Shilbhushan Khanderao |
+| Gunjan Pravin Chaudhari         | Shilbhushan Khanderao |
+| Saurabh Raju Vaidya             | Shilbhushan Khanderao |
+| Shruti Dhanalal Wadile ( AL )   | Shilbhushan Khanderao |
+| Ishan Raizada                   | Shweta Bhere          |
+| Krishna Aditya Chikkala         | Shweta Bhere          |
+| Snehal Shivaji Shinde           | Shweta Bhere          |
+| Suyog Avinash Joshi             | Shweta Bhere          |
+| Mohini Nikhil Kasar             | Vipul Tembulwar       |
+| Nidhi Kumari                    | Vipul Tembulwar       |
+| Vaibhav Sanjay Sonawane ( AL )  | Vipul Tembulwar       |
+| Vedant Suryakant Mali ( AL )    | Vipul Tembulwar       |
++---------------------------------+-----------------------+
+24 rows in set (0.00 sec)
+
+mysql> select s.full_name , t.full_name from student s left join faculty t on s.faculty_id=t.faculty_id;
++------------------------------------------+-----------------------+
+| full_name                                | full_name             |
++------------------------------------------+-----------------------+
+| ) LT ( edarahK kohsA hsakaA              | Aditya Kansana        |
+| Aasif Jamal                              | NULL                  |
+| Abhishek Anilkumar Borse                 | NULL                  |
+| Abhishek Dasondhi ( AL )                 | NULL                  |
+| Abhishek Narayan Jagtap                  | NULL                  |
+| Abhishek Vilas Gaikwad                   | NULL                  |
+| Adarsh Kumar Chandel ( CL )              | NULL                  |
+| Adarsh Kushwah                           | NULL                  |
+| Aditya Abhijeet Adhikari                 | NULL                  |
+| Aditya Sachin Korde                      | NULL                  |
+| Afsha Zarreen Sayeed Khan                | Aditya Kansana        |
+| Ajay Raysing Patil                       | NULL                  |
+| Akanksha Jeevan Puri ( CL )              | NULL                  |
+| Akanksha Somnath Dhanawade ( AL )        | NULL                  |
+| Akash Pandurang Kokulwar                 | NULL                  |
+| Akash Raghunath Bhadane                  | NULL                  |
+| Akshay Keshav Balte                      | NULL                  |
+| Amar Balasaheb Toge                      | NULL                  |
+| Amarnath Ambadas Malpuri                 | NULL                  |
+| Amey Arun Parab ( TL )                   | NULL                  |
+| Amey Shekhar Raut                        | Aniket Takmare        |
+| Aniket Bhagwat Sherkar                   | NULL                  |
+| Aniket Hanumant Darade                   | NULL                  |
+| Anirudha Dinesh Shinde                   | NULL                  |
+| Ankita Ashok Kanthe                      | NULL                  |
+| Ankita Yatin Kher                        | NULL                  |
+| Annu Yadav ( AL )                        | NULL                  |
+| Anuj Trivedi ( TL )                      | NULL                  |
+| Anurag More ( CL )                       | NULL                  |
+| Anushka Chavan                           | NULL                  |
+| Apurva Nandkishor Dhonde                 | Aniket Takmare        |
+| Aryan Genbhau Gawade ( AL )              | NULL                  |
+| Aryan Manohar Pate                       | NULL                  |
+| Aryan Sunil Shambharkar                  | NULL                  |
+| Asfiya Naveed Ahmed Shaikh ( CCR )       | NULL                  |
+| Asmit Ajay Upganlawar                    | NULL                  |
+| Asmita Vijaykumar Mhetre ( TL )          | NULL                  |
+| Atharva Anil Thumbare                    | NULL                  |
+| Avneesh Dubey                            | NULL                  |
+| Ayush Ranjan ( CL )                      | NULL                  |
+| Bhagyesh Tushar Wani                     | Manoj More            |
+| Bhavna Yadav Balpande                    | NULL                  |
+| Bhushan Chandan Dhavan ( TL )            | NULL                  |
+| Bhushan Narendra Attarde                 | NULL                  |
+| Bhushan Vasantrao Thate                  | NULL                  |
+| Chaitali Bhagwat Barhate                 | NULL                  |
+| Chetankumar Badusing Banjara ( AL )      | NULL                  |
+| Chinmay Vijay Bonde ( CL )               | NULL                  |
+| Darshan Suryabhan Gadakh                 | NULL                  |
+| Darshana Sopandas Malewar                | NULL                  |
+| Deepa Sushil Jadhav ( AL )               | Manoj More            |
+| Deepra Banerjee                          | NULL                  |
+| Devendra Kakaji Deore ( TL )             | NULL                  |
+| Dhananjay Tansen Shitole                 | NULL                  |
+| Dhanashree Deepak Pawar  ( CL )          | NULL                  |
+| Dhaval Manik Patil                       | NULL                  |
+| Dhiraj Divakar Patil                     | NULL                  |
+| Digvijay Maruti Thanekar                 | NULL                  |
+| Dipak Chandrakant Firake                 | NULL                  |
+| Dipali Amit Vasave                       | NULL                  |
+| Dipti Sampat Akhade                      | Shilbhushan Khanderao |
+| Dnyaneshvar Bibhishan Suryavanshi        | NULL                  |
+| Fameshwari                               | NULL                  |
+| Gaurav Anil Patil ( CL )                 | NULL                  |
+| Gaurav Anil Sontakke                     | NULL                  |
+| Gaurav Aniruddha Apte                    | NULL                  |
+| Gaurav Baikunth Nath Mishra ( AL )       | NULL                  |
+| Gaurav Suresh Salunkhe ( TL )            | NULL                  |
+| Gauri Pratul Kolte                       | NULL                  |
+| Goutam Soni                              | NULL                  |
+| Gunjan Pravin Chaudhari                  | Shilbhushan Khanderao |
+| Hanuman Bhagwat Jadhav                   | NULL                  |
+| Harshal Vilas Tarmale ( TL )             | NULL                  |
+| Heramb Dilip Shinde                      | NULL                  |
+| Himanshu Dhananjay Patil ( AL )          | NULL                  |
+| Himanshu Jagdish Samrit                  | NULL                  |
+| Hitesh Ravindra Singh Chaudhari          | NULL                  |
+| Hrishikesh Deepak Tappe                  | NULL                  |
+| Isha Anant Puranik                       | NULL                  |
+| Isha Pralhad Gulhane ( CL )              | NULL                  |
+| Ishan Raizada                            | Shweta Bhere          |
+| Jaydeep Patidar                          | NULL                  |
+| Kalyanee Ravindra Pachghare              | NULL                  |
+| Kamlini Govardhan Bhasme ( CL )          | NULL                  |
+| Kapil Umakant Katte                      | NULL                  |
+| Kaushal Rajendra Patil ( TL )            | NULL                  |
+| Khetesh Ummedram Choudhary               | NULL                  |
+| Kiran Vishwas Mahajan                    | NULL                  |
+| Komal Kadnor                             | NULL                  |
+| Komal Ramrao Jadhav ( AL )               | NULL                  |
+| Krishna Aditya Chikkala                  | Shweta Bhere          |
+| Krushna Vikas Chavan                     | NULL                  |
+| Madhuri Kedarnath Chavan ( CL )          | NULL                  |
+| Manali Sharad Bharati Bhujbal            | NULL                  |
+| Manish Laxmikant Chaudhari               | NULL                  |
+| Mickey Manohar                           | NULL                  |
+| Minal Ashok Kamde ( AL )                 | NULL                  |
+| Mohammad Rehan Ansari                    | NULL                  |
+| Mohammad Salik Zameer Ahmed Mulla ( TL ) | NULL                  |
+| Mohd Allahuddin                          | NULL                  |
+| Mohini Nikhil Kasar                      | Vipul Tembulwar       |
+| Mohit Rahul Sarode                       | NULL                  |
+| Mujahid Jamshed Bagwan                   | NULL                  |
+| Nandini Nitin Rasal                      | NULL                  |
+| Nandini Wasant Wahane ( AL )             | NULL                  |
+| Naushin Yusuf Sayyad ( TL )              | NULL                  |
+| Neha Devidas Patil                       | NULL                  |
+| Neha Nandu Wagh ( CL )                   | NULL                  |
+| Neha Pravin Kothavade                    | NULL                  |
+| Neha Vijay Ahire                         | NULL                  |
+| Nidhi Kumari                             | Vipul Tembulwar       |
+| Niket Devendra Malviya ( TL )            | NULL                  |
+| Nikhil Anil Shingare                     | NULL                  |
+| Nikhil Dubey                             | NULL                  |
+| Nikhil Samadhan Nikam ( CL )             | NULL                  |
+| Nishant Sharad Desle                     | NULL                  |
+| Nutesh Vinod Tajne                       | NULL                  |
+| Om Bhagirath Londhe ( AL )               | NULL                  |
+| Om Santosh Pawar                         | NULL                  |
+| Omkar Pramod Nalawade                    | NULL                  |
+| Parikshit Mahendra Urkande               | Aditya Kansana        |
+| Parikshit Vijay Patil                    | NULL                  |
+| Pooja Kundlik Athare                     | NULL                  |
+| Poonam Balaji More ( AL )                | NULL                  |
+| Pradip Prakash Patil                     | NULL                  |
+| Prajakta Manik Kamble                    | NULL                  |
+| Prajwal Rathod ( TL )                    | NULL                  |
+| Pranali Ramesh Mahadik ( CL )            | NULL                  |
+| Pranali Vilas Magar                      | NULL                  |
+| Pranavkumar Sanjay Munot                 | NULL                  |
+| Pranjali Pramod Rane                     | Aditya Kansana        |
+| Prasad Sagar Talekar ( AL )              | NULL                  |
+| Prashant Aba Patil                       | NULL                  |
+| Prateek Gupta                            | NULL                  |
+| Prathamesh Sunil Maharnur                | NULL                  |
+| Prathmesh Mane ( CL )                    | NULL                  |
+| Pratik Ashok Avhad ( TL )                | NULL                  |
+| Pratik Kailas Barse                      | NULL                  |
+| Prem Satyanarayan Myana                  | NULL                  |
+| Priyanka Bhausaheb Thange                | NULL                  |
+| Purva Pradeep Thavai                     | Aniket Takmare        |
+| Purvesh Ravindra Khandare ( TL )         | NULL                  |
+| Rachana Namdeo Khadse                    | NULL                  |
+| Ragini Yadav                             | NULL                  |
+| Rahul Dhondu Pawar ( AL )                | NULL                  |
+| Raj Jaydev Tangadi                       | NULL                  |
+| Rajat Lonkar ( CL )                      | NULL                  |
+| Ravina Punjarao Gadekar                  | NULL                  |
+| Ritik Gupta                              | NULL                  |
+| Rohini Bhagwatkar                        | NULL                  |
+| Rohit Bhalse                             | Aniket Takmare        |
+| Rohit Deshpande                          | NULL                  |
+| Ronak Ravindra Kolhe ( AL )              | NULL                  |
+| Roshan Sanjay Kosare                     | NULL                  |
+| Rugvedi Dilipkumar Wankhede ( CL )       | NULL                  |
+| Rushikesh Sandeep Temkar                 | NULL                  |
+| Rushikesh Vijay Dhavan                   | NULL                  |
+| Ruttik Prakash Hiwase ( TL )             | NULL                  |
+| Rutuja Pravin Gholap                     | NULL                  |
+| Sachin Rajesh Dabewar                    | NULL                  |
+| Sachin Sanjay Waghchaure ( AL )          | Manoj More            |
+| Sagar Band                               | NULL                  |
+| Sagar Shyam Udgiri ( TL )                | NULL                  |
+| Sakshi Purushottam Baitule               | NULL                  |
+| Sakshi Sandip Ostwal                     | NULL                  |
+| Sakshi Umesh Chaudhari                   | NULL                  |
+| Saloni                                   | NULL                  |
+| Samarth Ramchandra Burkule ( CL )        | NULL                  |
+| Samiksha Vilas Wagaj                     | NULL                  |
+| Samir Bharati                            | NULL                  |
+| Sanghapal Ishwar Gavhane                 | Manoj More            |
+| Sanjukta Sarkar                          | NULL                  |
+| Sanket Kulkarni ( CL )                   | NULL                  |
+| Sanket Purushottam Mandavgane            | NULL                  |
+| Sanket Sanjay Shalukar ( TCR )           | NULL                  |
+| Sanskruti Shankar Dhole                  | NULL                  |
+| Sarthak Satish Sambare                   | NULL                  |
+| Satyajit Tanaji Kadam  ( TL )            | NULL                  |
+| Saurabh Anil Mahajan ( AL )              | NULL                  |
+| Saurabh Pramod Walanj                    | NULL                  |
+| Saurabh Raju Vaidya                      | Shilbhushan Khanderao |
+| Shamal Manik Bhujbal                     | NULL                  |
+| Shantanu Laxman Chaudhari                | NULL                  |
+| Shashibhushan Avdhesh Mishra ( AL )      | NULL                  |
+| Shilpa Jayesh Gharat                     | NULL                  |
+| Shital Janardan Sabale                   | NULL                  |
+| Shivanjali Bhanudas Mote ( CL )          | NULL                  |
+| Shraddha Chandrashekhar Hade ( TL )      | NULL                  |
+| Shreya Ajay Pandharipande                | NULL                  |
+| Shreya Raj                               | NULL                  |
+| Shruti Dhanalal Wadile ( AL )            | Shilbhushan Khanderao |
+| Shruti Dinkar Jadhav                     | NULL                  |
+| Shubham Chandrakant Ghaware              | NULL                  |
+| Shubham Chandrikapure                    | NULL                  |
+| Shubham Dnyaneshwar Thakur ( TL )        | NULL                  |
+| Shubham Santosh Rokade ( CL )            | NULL                  |
+| Shubham Shriram Chaudhari                | NULL                  |
+| Siddhi Machhindra Adkitte                | NULL                  |
+| Sneha Gorakhnath Bhong                   | NULL                  |
+| Snehal Kailas Kharde                     | NULL                  |
+| Snehal Shivaji Shinde                    | Shweta Bhere          |
+| Sofiya Taiyaballi Sutar                  | NULL                  |
+| Soma Vasudev                             | NULL                  |
+| Someshvar Tiwari                         | NULL                  |
+| Soumya Prasad Sahu  ( CL )               | NULL                  |
+| Suchit Prashant Sawant                   | NULL                  |
+| Sudhansu Dalchand Kapgate ( AL )         | NULL                  |
+| Sumit Prabhakar Mote ( TCR )             | NULL                  |
+| Supriya Mahesh Suryawanshi               | NULL                  |
+| Suraj Rawat ( TL )                       | NULL                  |
+| Suyog Avinash Joshi                      | Shweta Bhere          |
+| Swapna Sanjay Saste                      | NULL                  |
+| Tanmay Chandrakant Sawant                | NULL                  |
+| Tanmay Mukesh Raut ( CL )                | NULL                  |
+| Tanmay Vasant Salwe ( CCR )              | NULL                  |
+| Tejal Sunil Mahajan                      | NULL                  |
+| Tejas Anil Jadhao                        | NULL                  |
+| Tushar Gajanan Gedam ( AL )              | NULL                  |
+| Tushar Hanmant Rupnavar                  | NULL                  |
+| Tushar Vilas Lahamge ( TL )              | NULL                  |
+| Vaibhav Sanjay Sonawane ( AL )           | Vipul Tembulwar       |
+| Vaishakh Lalchand Malode                 | NULL                  |
+| Vaishnavi Dhanaji Salvi                  | NULL                  |
+| Vaishnavi Dhanraj Pokale                 | NULL                  |
+| Vaishnavi Pramod Pardeshi ( TL )         | NULL                  |
+| Vaishnavi Sanjay Jagtap                  | NULL                  |
+| Varsha Shivaji Matsagar                  | NULL                  |
+| Vasundhara Vitthal Nanaware              | NULL                  |
+| Vedant Ramrao Shiradhonkar ( CL )        | NULL                  |
+| Vedant Suryakant Mali ( AL )             | Vipul Tembulwar       |
+| Vedant Vishwanath Padave                 | NULL                  |
+| Vibhav Vikas Chavan                      | NULL                  |
+| Virag Hote                               | NULL                  |
+| Vrushabh Vyankatesh Bhaskar ( CL )       | NULL                  |
+| Yash Gulabrao Mankumare ( TL )           | NULL                  |
+| Yash Pramod Bambal                       | NULL                  |
+| Yash Sunil Patil                         | NULL                  |
+| Yukta Ravindra Jadhav                    | NULL                  |
++------------------------------------------+-----------------------+
+238 rows in set (0.00 sec)
+
+mysql> select s.full_name , t.full_name from student s right join faculty t on s.faculty_id=t.faculty_id;
++---------------------------------+-----------------------+
+| full_name                       | full_name             |
++---------------------------------+-----------------------+
+| ) LT ( edarahK kohsA hsakaA     | Aditya Kansana        |
+| Afsha Zarreen Sayeed Khan       | Aditya Kansana        |
+| Parikshit Mahendra Urkande      | Aditya Kansana        |
+| Pranjali Pramod Rane            | Aditya Kansana        |
+| Amey Shekhar Raut               | Aniket Takmare        |
+| Apurva Nandkishor Dhonde        | Aniket Takmare        |
+| Purva Pradeep Thavai            | Aniket Takmare        |
+| Rohit Bhalse                    | Aniket Takmare        |
+| Bhagyesh Tushar Wani            | Manoj More            |
+| Deepa Sushil Jadhav ( AL )      | Manoj More            |
+| Sachin Sanjay Waghchaure ( AL ) | Manoj More            |
+| Sanghapal Ishwar Gavhane        | Manoj More            |
+| Dipti Sampat Akhade             | Shilbhushan Khanderao |
+| Gunjan Pravin Chaudhari         | Shilbhushan Khanderao |
+| Saurabh Raju Vaidya             | Shilbhushan Khanderao |
+| Shruti Dhanalal Wadile ( AL )   | Shilbhushan Khanderao |
+| Ishan Raizada                   | Shweta Bhere          |
+| Krishna Aditya Chikkala         | Shweta Bhere          |
+| Snehal Shivaji Shinde           | Shweta Bhere          |
+| Suyog Avinash Joshi             | Shweta Bhere          |
+| Mohini Nikhil Kasar             | Vipul Tembulwar       |
+| Nidhi Kumari                    | Vipul Tembulwar       |
+| Vaibhav Sanjay Sonawane ( AL )  | Vipul Tembulwar       |
+| Vedant Suryakant Mali ( AL )    | Vipul Tembulwar       |
++---------------------------------+-----------------------+
+24 rows in set (0.00 sec)
+
+mysql> select s.full_name , t.full_name from student s right join faculty t on s.faculty_id<t.faculty_id;
++---------------------------------+-----------------------+
+| full_name                       | full_name             |
++---------------------------------+-----------------------+
+| NULL                            | Aditya Kansana        |
+| ) LT ( edarahK kohsA hsakaA     | Aniket Takmare        |
+| Afsha Zarreen Sayeed Khan       | Aniket Takmare        |
+| Parikshit Mahendra Urkande      | Aniket Takmare        |
+| Pranjali Pramod Rane            | Aniket Takmare        |
+| ) LT ( edarahK kohsA hsakaA     | Manoj More            |
+| Afsha Zarreen Sayeed Khan       | Manoj More            |
+| Amey Shekhar Raut               | Manoj More            |
+| Apurva Nandkishor Dhonde        | Manoj More            |
+| Parikshit Mahendra Urkande      | Manoj More            |
+| Pranjali Pramod Rane            | Manoj More            |
+| Purva Pradeep Thavai            | Manoj More            |
+| Rohit Bhalse                    | Manoj More            |
+| ) LT ( edarahK kohsA hsakaA     | Shilbhushan Khanderao |
+| Afsha Zarreen Sayeed Khan       | Shilbhushan Khanderao |
+| Amey Shekhar Raut               | Shilbhushan Khanderao |
+| Apurva Nandkishor Dhonde        | Shilbhushan Khanderao |
+| Bhagyesh Tushar Wani            | Shilbhushan Khanderao |
+| Deepa Sushil Jadhav ( AL )      | Shilbhushan Khanderao |
+| Parikshit Mahendra Urkande      | Shilbhushan Khanderao |
+| Pranjali Pramod Rane            | Shilbhushan Khanderao |
+| Purva Pradeep Thavai            | Shilbhushan Khanderao |
+| Rohit Bhalse                    | Shilbhushan Khanderao |
+| Sachin Sanjay Waghchaure ( AL ) | Shilbhushan Khanderao |
+| Sanghapal Ishwar Gavhane        | Shilbhushan Khanderao |
+| ) LT ( edarahK kohsA hsakaA     | Shweta Bhere          |
+| Afsha Zarreen Sayeed Khan       | Shweta Bhere          |
+| Amey Shekhar Raut               | Shweta Bhere          |
+| Apurva Nandkishor Dhonde        | Shweta Bhere          |
+| Bhagyesh Tushar Wani            | Shweta Bhere          |
+| Deepa Sushil Jadhav ( AL )      | Shweta Bhere          |
+| Dipti Sampat Akhade             | Shweta Bhere          |
+| Gunjan Pravin Chaudhari         | Shweta Bhere          |
+| Parikshit Mahendra Urkande      | Shweta Bhere          |
+| Pranjali Pramod Rane            | Shweta Bhere          |
+| Purva Pradeep Thavai            | Shweta Bhere          |
+| Rohit Bhalse                    | Shweta Bhere          |
+| Sachin Sanjay Waghchaure ( AL ) | Shweta Bhere          |
+| Sanghapal Ishwar Gavhane        | Shweta Bhere          |
+| Saurabh Raju Vaidya             | Shweta Bhere          |
+| Shruti Dhanalal Wadile ( AL )   | Shweta Bhere          |
+| ) LT ( edarahK kohsA hsakaA     | Vipul Tembulwar       |
+| Afsha Zarreen Sayeed Khan       | Vipul Tembulwar       |
+| Amey Shekhar Raut               | Vipul Tembulwar       |
+| Apurva Nandkishor Dhonde        | Vipul Tembulwar       |
+| Bhagyesh Tushar Wani            | Vipul Tembulwar       |
+| Deepa Sushil Jadhav ( AL )      | Vipul Tembulwar       |
+| Dipti Sampat Akhade             | Vipul Tembulwar       |
+| Gunjan Pravin Chaudhari         | Vipul Tembulwar       |
+| Ishan Raizada                   | Vipul Tembulwar       |
+| Krishna Aditya Chikkala         | Vipul Tembulwar       |
+| Parikshit Mahendra Urkande      | Vipul Tembulwar       |
+| Pranjali Pramod Rane            | Vipul Tembulwar       |
+| Purva Pradeep Thavai            | Vipul Tembulwar       |
+| Rohit Bhalse                    | Vipul Tembulwar       |
+| Sachin Sanjay Waghchaure ( AL ) | Vipul Tembulwar       |
+| Sanghapal Ishwar Gavhane        | Vipul Tembulwar       |
+| Saurabh Raju Vaidya             | Vipul Tembulwar       |
+| Shruti Dhanalal Wadile ( AL )   | Vipul Tembulwar       |
+| Snehal Shivaji Shinde           | Vipul Tembulwar       |
+| Suyog Avinash Joshi             | Vipul Tembulwar       |
++---------------------------------+-----------------------+
+61 rows in set (0.00 sec)
+
+mysql> select full_name , t.full_name from student right join faculty t on student.faculty_id=t.faculty_id;
+ERROR 1052 (23000): Column 'full_name' in field list is ambiguous
+mysql> select student.full_name , t.full_name from student right join faculty t on student.faculty_id=t.faculty_id;
++---------------------------------+-----------------------+
+| full_name                       | full_name             |
++---------------------------------+-----------------------+
+| ) LT ( edarahK kohsA hsakaA     | Aditya Kansana        |
+| Afsha Zarreen Sayeed Khan       | Aditya Kansana        |
+| Parikshit Mahendra Urkande      | Aditya Kansana        |
+| Pranjali Pramod Rane            | Aditya Kansana        |
+| Amey Shekhar Raut               | Aniket Takmare        |
+| Apurva Nandkishor Dhonde        | Aniket Takmare        |
+| Purva Pradeep Thavai            | Aniket Takmare        |
+| Rohit Bhalse                    | Aniket Takmare        |
+| Bhagyesh Tushar Wani            | Manoj More            |
+| Deepa Sushil Jadhav ( AL )      | Manoj More            |
+| Sachin Sanjay Waghchaure ( AL ) | Manoj More            |
+| Sanghapal Ishwar Gavhane        | Manoj More            |
+| Dipti Sampat Akhade             | Shilbhushan Khanderao |
+| Gunjan Pravin Chaudhari         | Shilbhushan Khanderao |
+| Saurabh Raju Vaidya             | Shilbhushan Khanderao |
+| Shruti Dhanalal Wadile ( AL )   | Shilbhushan Khanderao |
+| Ishan Raizada                   | Shweta Bhere          |
+| Krishna Aditya Chikkala         | Shweta Bhere          |
+| Snehal Shivaji Shinde           | Shweta Bhere          |
+| Suyog Avinash Joshi             | Shweta Bhere          |
+| Mohini Nikhil Kasar             | Vipul Tembulwar       |
+| Nidhi Kumari                    | Vipul Tembulwar       |
+| Vaibhav Sanjay Sonawane ( AL )  | Vipul Tembulwar       |
+| Vedant Suryakant Mali ( AL )    | Vipul Tembulwar       |
++---------------------------------+-----------------------+
+24 rows in set (0.00 sec)
+
+mysql> select dob, grade from student right join faculty t on student.faculty_id=t.faculty_id;
++------------+-------+
+| dob        | grade |
++------------+-------+
+| 2002-07-09 |  9.09 |
+| 2001-07-28 |  4.01 |
+| 2003-01-13 |  9.60 |
+| 2003-04-04 |  2.90 |
+| 2000-04-30 |  0.55 |
+| 2001-02-20 |  6.86 |
+| 2000-06-07 |  5.46 |
+| 2002-04-21 |  4.01 |
+| 2002-04-10 |  4.44 |
+| 2002-09-17 |  4.26 |
+| 2001-02-06 |  4.90 |
+| 2003-06-30 |  2.93 |
+| 2002-11-27 |  7.23 |
+| 2001-03-14 |  4.67 |
+| 2003-09-17 |  6.04 |
+| 2003-02-16 |  8.62 |
+| 2001-11-04 |  8.80 |
+| 2002-01-08 |  8.37 |
+| 2001-11-23 |  1.31 |
+| 2003-09-30 |  8.91 |
+| 2003-02-22 |  6.57 |
+| 2001-08-11 |  0.60 |
+| 2002-10-12 |  6.00 |
+| 2000-01-12 |  3.32 |
++------------+-------+
+24 rows in set (0.00 sec)
+
+mysql> select * from student where prn=250840320230;
++--------------+------------------------------+------------+-----------+---------+------------+-------+
+| prn          | full_name                    | dob        | role_code | team_id | faculty_id | grade |
++--------------+------------------------------+------------+-----------+---------+------------+-------+
+| 250840320230 | Vedant Suryakant Mali ( AL ) | 2000-01-12 | NULL      |      24 |          6 |  3.32 |
++--------------+------------------------------+------------+-----------+---------+------------+-------+
+1 row in set (0.00 sec)
+
+mysql> select * from team cross join faculty;
++---------+---------+-------------------+------------+-----------------------+-------+-----------+
+| team_id | team_no | team_name         | faculty_id | full_name             | email | is_active |
++---------+---------+-------------------+------------+-----------------------+-------+-----------+
+|       1 |       1 | Logic Legends     |          6 | Vipul Tembulwar       | NULL  |         1 |
+|       1 |       1 | Logic Legends     |          5 | Shweta Bhere          | NULL  |         1 |
+|       1 |       1 | Logic Legends     |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|       1 |       1 | Logic Legends     |          3 | Manoj More            | NULL  |         1 |
+|       1 |       1 | Logic Legends     |          2 | Aniket Takmare        | NULL  |         1 |
+|       1 |       1 | Logic Legends     |          1 | Aditya Kansana        | NULL  |         1 |
+|       2 |       2 | DEVdas            |          6 | Vipul Tembulwar       | NULL  |         1 |
+|       2 |       2 | DEVdas            |          5 | Shweta Bhere          | NULL  |         1 |
+|       2 |       2 | DEVdas            |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|       2 |       2 | DEVdas            |          3 | Manoj More            | NULL  |         1 |
+|       2 |       2 | DEVdas            |          2 | Aniket Takmare        | NULL  |         1 |
+|       2 |       2 | DEVdas            |          1 | Aditya Kansana        | NULL  |         1 |
+|       3 |       3 | AlphaCoder        |          6 | Vipul Tembulwar       | NULL  |         1 |
+|       3 |       3 | AlphaCoder        |          5 | Shweta Bhere          | NULL  |         1 |
+|       3 |       3 | AlphaCoder        |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|       3 |       3 | AlphaCoder        |          3 | Manoj More            | NULL  |         1 |
+|       3 |       3 | AlphaCoder        |          2 | Aniket Takmare        | NULL  |         1 |
+|       3 |       3 | AlphaCoder        |          1 | Aditya Kansana        | NULL  |         1 |
+|       4 |       4 | Dacengers         |          6 | Vipul Tembulwar       | NULL  |         1 |
+|       4 |       4 | Dacengers         |          5 | Shweta Bhere          | NULL  |         1 |
+|       4 |       4 | Dacengers         |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|       4 |       4 | Dacengers         |          3 | Manoj More            | NULL  |         1 |
+|       4 |       4 | Dacengers         |          2 | Aniket Takmare        | NULL  |         1 |
+|       4 |       4 | Dacengers         |          1 | Aditya Kansana        | NULL  |         1 |
+|       5 |       5 | TechSpirits       |          6 | Vipul Tembulwar       | NULL  |         1 |
+|       5 |       5 | TechSpirits       |          5 | Shweta Bhere          | NULL  |         1 |
+|       5 |       5 | TechSpirits       |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|       5 |       5 | TechSpirits       |          3 | Manoj More            | NULL  |         1 |
+|       5 |       5 | TechSpirits       |          2 | Aniket Takmare        | NULL  |         1 |
+|       5 |       5 | TechSpirits       |          1 | Aditya Kansana        | NULL  |         1 |
+|       6 |       6 | Bug Brahmas       |          6 | Vipul Tembulwar       | NULL  |         1 |
+|       6 |       6 | Bug Brahmas       |          5 | Shweta Bhere          | NULL  |         1 |
+|       6 |       6 | Bug Brahmas       |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|       6 |       6 | Bug Brahmas       |          3 | Manoj More            | NULL  |         1 |
+|       6 |       6 | Bug Brahmas       |          2 | Aniket Takmare        | NULL  |         1 |
+|       6 |       6 | Bug Brahmas       |          1 | Aditya Kansana        | NULL  |         1 |
+|       7 |       7 | Ekalavya          |          6 | Vipul Tembulwar       | NULL  |         1 |
+|       7 |       7 | Ekalavya          |          5 | Shweta Bhere          | NULL  |         1 |
+|       7 |       7 | Ekalavya          |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|       7 |       7 | Ekalavya          |          3 | Manoj More            | NULL  |         1 |
+|       7 |       7 | Ekalavya          |          2 | Aniket Takmare        | NULL  |         1 |
+|       7 |       7 | Ekalavya          |          1 | Aditya Kansana        | NULL  |         1 |
+|       8 |       8 | CodeStructs       |          6 | Vipul Tembulwar       | NULL  |         1 |
+|       8 |       8 | CodeStructs       |          5 | Shweta Bhere          | NULL  |         1 |
+|       8 |       8 | CodeStructs       |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|       8 |       8 | CodeStructs       |          3 | Manoj More            | NULL  |         1 |
+|       8 |       8 | CodeStructs       |          2 | Aniket Takmare        | NULL  |         1 |
+|       8 |       8 | CodeStructs       |          1 | Aditya Kansana        | NULL  |         1 |
+|       9 |       9 | Cyber_Shakti      |          6 | Vipul Tembulwar       | NULL  |         1 |
+|       9 |       9 | Cyber_Shakti      |          5 | Shweta Bhere          | NULL  |         1 |
+|       9 |       9 | Cyber_Shakti      |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|       9 |       9 | Cyber_Shakti      |          3 | Manoj More            | NULL  |         1 |
+|       9 |       9 | Cyber_Shakti      |          2 | Aniket Takmare        | NULL  |         1 |
+|       9 |       9 | Cyber_Shakti      |          1 | Aditya Kansana        | NULL  |         1 |
+|      10 |      10 | AlgoVeer          |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      10 |      10 | AlgoVeer          |          5 | Shweta Bhere          | NULL  |         1 |
+|      10 |      10 | AlgoVeer          |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      10 |      10 | AlgoVeer          |          3 | Manoj More            | NULL  |         1 |
+|      10 |      10 | AlgoVeer          |          2 | Aniket Takmare        | NULL  |         1 |
+|      10 |      10 | AlgoVeer          |          1 | Aditya Kansana        | NULL  |         1 |
+|      11 |      11 | StackNova         |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      11 |      11 | StackNova         |          5 | Shweta Bhere          | NULL  |         1 |
+|      11 |      11 | StackNova         |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      11 |      11 | StackNova         |          3 | Manoj More            | NULL  |         1 |
+|      11 |      11 | StackNova         |          2 | Aniket Takmare        | NULL  |         1 |
+|      11 |      11 | StackNova         |          1 | Aditya Kansana        | NULL  |         1 |
+|      12 |      12 | Super 10          |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      12 |      12 | Super 10          |          5 | Shweta Bhere          | NULL  |         1 |
+|      12 |      12 | Super 10          |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      12 |      12 | Super 10          |          3 | Manoj More            | NULL  |         1 |
+|      12 |      12 | Super 10          |          2 | Aniket Takmare        | NULL  |         1 |
+|      12 |      12 | Super 10          |          1 | Aditya Kansana        | NULL  |         1 |
+|      13 |      13 | StackOfTen        |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      13 |      13 | StackOfTen        |          5 | Shweta Bhere          | NULL  |         1 |
+|      13 |      13 | StackOfTen        |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      13 |      13 | StackOfTen        |          3 | Manoj More            | NULL  |         1 |
+|      13 |      13 | StackOfTen        |          2 | Aniket Takmare        | NULL  |         1 |
+|      13 |      13 | StackOfTen        |          1 | Aditya Kansana        | NULL  |         1 |
+|      14 |      14 | CodeRaptors       |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      14 |      14 | CodeRaptors       |          5 | Shweta Bhere          | NULL  |         1 |
+|      14 |      14 | CodeRaptors       |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      14 |      14 | CodeRaptors       |          3 | Manoj More            | NULL  |         1 |
+|      14 |      14 | CodeRaptors       |          2 | Aniket Takmare        | NULL  |         1 |
+|      14 |      14 | CodeRaptors       |          1 | Aditya Kansana        | NULL  |         1 |
+|      15 |      15 | Access Modifiers  |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      15 |      15 | Access Modifiers  |          5 | Shweta Bhere          | NULL  |         1 |
+|      15 |      15 | Access Modifiers  |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      15 |      15 | Access Modifiers  |          3 | Manoj More            | NULL  |         1 |
+|      15 |      15 | Access Modifiers  |          2 | Aniket Takmare        | NULL  |         1 |
+|      15 |      15 | Access Modifiers  |          1 | Aditya Kansana        | NULL  |         1 |
+|      16 |      16 | CodeBlooded       |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      16 |      16 | CodeBlooded       |          5 | Shweta Bhere          | NULL  |         1 |
+|      16 |      16 | CodeBlooded       |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      16 |      16 | CodeBlooded       |          3 | Manoj More            | NULL  |         1 |
+|      16 |      16 | CodeBlooded       |          2 | Aniket Takmare        | NULL  |         1 |
+|      16 |      16 | CodeBlooded       |          1 | Aditya Kansana        | NULL  |         1 |
+|      17 |      17 | sa_Algoholics     |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      17 |      17 | sa_Algoholics     |          5 | Shweta Bhere          | NULL  |         1 |
+|      17 |      17 | sa_Algoholics     |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      17 |      17 | sa_Algoholics     |          3 | Manoj More            | NULL  |         1 |
+|      17 |      17 | sa_Algoholics     |          2 | Aniket Takmare        | NULL  |         1 |
+|      17 |      17 | sa_Algoholics     |          1 | Aditya Kansana        | NULL  |         1 |
+|      18 |      18 | Phoenix           |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      18 |      18 | Phoenix           |          5 | Shweta Bhere          | NULL  |         1 |
+|      18 |      18 | Phoenix           |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      18 |      18 | Phoenix           |          3 | Manoj More            | NULL  |         1 |
+|      18 |      18 | Phoenix           |          2 | Aniket Takmare        | NULL  |         1 |
+|      18 |      18 | Phoenix           |          1 | Aditya Kansana        | NULL  |         1 |
+|      19 |      19 | TechUdaan         |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      19 |      19 | TechUdaan         |          5 | Shweta Bhere          | NULL  |         1 |
+|      19 |      19 | TechUdaan         |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      19 |      19 | TechUdaan         |          3 | Manoj More            | NULL  |         1 |
+|      19 |      19 | TechUdaan         |          2 | Aniket Takmare        | NULL  |         1 |
+|      19 |      19 | TechUdaan         |          1 | Aditya Kansana        | NULL  |         1 |
+|      20 |      20 | Runtime Rebels    |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      20 |      20 | Runtime Rebels    |          5 | Shweta Bhere          | NULL  |         1 |
+|      20 |      20 | Runtime Rebels    |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      20 |      20 | Runtime Rebels    |          3 | Manoj More            | NULL  |         1 |
+|      20 |      20 | Runtime Rebels    |          2 | Aniket Takmare        | NULL  |         1 |
+|      20 |      20 | Runtime Rebels    |          1 | Aditya Kansana        | NULL  |         1 |
+|      21 |      21 | Binary 2 Infinity |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      21 |      21 | Binary 2 Infinity |          5 | Shweta Bhere          | NULL  |         1 |
+|      21 |      21 | Binary 2 Infinity |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      21 |      21 | Binary 2 Infinity |          3 | Manoj More            | NULL  |         1 |
+|      21 |      21 | Binary 2 Infinity |          2 | Aniket Takmare        | NULL  |         1 |
+|      21 |      21 | Binary 2 Infinity |          1 | Aditya Kansana        | NULL  |         1 |
+|      22 |      22 | Binary Bandits    |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      22 |      22 | Binary Bandits    |          5 | Shweta Bhere          | NULL  |         1 |
+|      22 |      22 | Binary Bandits    |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      22 |      22 | Binary Bandits    |          3 | Manoj More            | NULL  |         1 |
+|      22 |      22 | Binary Bandits    |          2 | Aniket Takmare        | NULL  |         1 |
+|      22 |      22 | Binary Bandits    |          1 | Aditya Kansana        | NULL  |         1 |
+|      23 |      23 | Algo-Warriors     |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      23 |      23 | Algo-Warriors     |          5 | Shweta Bhere          | NULL  |         1 |
+|      23 |      23 | Algo-Warriors     |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      23 |      23 | Algo-Warriors     |          3 | Manoj More            | NULL  |         1 |
+|      23 |      23 | Algo-Warriors     |          2 | Aniket Takmare        | NULL  |         1 |
+|      23 |      23 | Algo-Warriors     |          1 | Aditya Kansana        | NULL  |         1 |
+|      24 |      24 | Code-Mafia        |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      24 |      24 | Code-Mafia        |          5 | Shweta Bhere          | NULL  |         1 |
+|      24 |      24 | Code-Mafia        |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      24 |      24 | Code-Mafia        |          3 | Manoj More            | NULL  |         1 |
+|      24 |      24 | Code-Mafia        |          2 | Aniket Takmare        | NULL  |         1 |
+|      24 |      24 | Code-Mafia        |          1 | Aditya Kansana        | NULL  |         1 |
++---------+---------+-------------------+------------+-----------------------+-------+-----------+
+144 rows in set (0.00 sec)
+
+mysql> select * from team, faculty;
++---------+---------+-------------------+------------+-----------------------+-------+-----------+
+| team_id | team_no | team_name         | faculty_id | full_name             | email | is_active |
++---------+---------+-------------------+------------+-----------------------+-------+-----------+
+|       1 |       1 | Logic Legends     |          6 | Vipul Tembulwar       | NULL  |         1 |
+|       1 |       1 | Logic Legends     |          5 | Shweta Bhere          | NULL  |         1 |
+|       1 |       1 | Logic Legends     |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|       1 |       1 | Logic Legends     |          3 | Manoj More            | NULL  |         1 |
+|       1 |       1 | Logic Legends     |          2 | Aniket Takmare        | NULL  |         1 |
+|       1 |       1 | Logic Legends     |          1 | Aditya Kansana        | NULL  |         1 |
+|       2 |       2 | DEVdas            |          6 | Vipul Tembulwar       | NULL  |         1 |
+|       2 |       2 | DEVdas            |          5 | Shweta Bhere          | NULL  |         1 |
+|       2 |       2 | DEVdas            |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|       2 |       2 | DEVdas            |          3 | Manoj More            | NULL  |         1 |
+|       2 |       2 | DEVdas            |          2 | Aniket Takmare        | NULL  |         1 |
+|       2 |       2 | DEVdas            |          1 | Aditya Kansana        | NULL  |         1 |
+|       3 |       3 | AlphaCoder        |          6 | Vipul Tembulwar       | NULL  |         1 |
+|       3 |       3 | AlphaCoder        |          5 | Shweta Bhere          | NULL  |         1 |
+|       3 |       3 | AlphaCoder        |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|       3 |       3 | AlphaCoder        |          3 | Manoj More            | NULL  |         1 |
+|       3 |       3 | AlphaCoder        |          2 | Aniket Takmare        | NULL  |         1 |
+|       3 |       3 | AlphaCoder        |          1 | Aditya Kansana        | NULL  |         1 |
+|       4 |       4 | Dacengers         |          6 | Vipul Tembulwar       | NULL  |         1 |
+|       4 |       4 | Dacengers         |          5 | Shweta Bhere          | NULL  |         1 |
+|       4 |       4 | Dacengers         |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|       4 |       4 | Dacengers         |          3 | Manoj More            | NULL  |         1 |
+|       4 |       4 | Dacengers         |          2 | Aniket Takmare        | NULL  |         1 |
+|       4 |       4 | Dacengers         |          1 | Aditya Kansana        | NULL  |         1 |
+|       5 |       5 | TechSpirits       |          6 | Vipul Tembulwar       | NULL  |         1 |
+|       5 |       5 | TechSpirits       |          5 | Shweta Bhere          | NULL  |         1 |
+|       5 |       5 | TechSpirits       |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|       5 |       5 | TechSpirits       |          3 | Manoj More            | NULL  |         1 |
+|       5 |       5 | TechSpirits       |          2 | Aniket Takmare        | NULL  |         1 |
+|       5 |       5 | TechSpirits       |          1 | Aditya Kansana        | NULL  |         1 |
+|       6 |       6 | Bug Brahmas       |          6 | Vipul Tembulwar       | NULL  |         1 |
+|       6 |       6 | Bug Brahmas       |          5 | Shweta Bhere          | NULL  |         1 |
+|       6 |       6 | Bug Brahmas       |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|       6 |       6 | Bug Brahmas       |          3 | Manoj More            | NULL  |         1 |
+|       6 |       6 | Bug Brahmas       |          2 | Aniket Takmare        | NULL  |         1 |
+|       6 |       6 | Bug Brahmas       |          1 | Aditya Kansana        | NULL  |         1 |
+|       7 |       7 | Ekalavya          |          6 | Vipul Tembulwar       | NULL  |         1 |
+|       7 |       7 | Ekalavya          |          5 | Shweta Bhere          | NULL  |         1 |
+|       7 |       7 | Ekalavya          |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|       7 |       7 | Ekalavya          |          3 | Manoj More            | NULL  |         1 |
+|       7 |       7 | Ekalavya          |          2 | Aniket Takmare        | NULL  |         1 |
+|       7 |       7 | Ekalavya          |          1 | Aditya Kansana        | NULL  |         1 |
+|       8 |       8 | CodeStructs       |          6 | Vipul Tembulwar       | NULL  |         1 |
+|       8 |       8 | CodeStructs       |          5 | Shweta Bhere          | NULL  |         1 |
+|       8 |       8 | CodeStructs       |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|       8 |       8 | CodeStructs       |          3 | Manoj More            | NULL  |         1 |
+|       8 |       8 | CodeStructs       |          2 | Aniket Takmare        | NULL  |         1 |
+|       8 |       8 | CodeStructs       |          1 | Aditya Kansana        | NULL  |         1 |
+|       9 |       9 | Cyber_Shakti      |          6 | Vipul Tembulwar       | NULL  |         1 |
+|       9 |       9 | Cyber_Shakti      |          5 | Shweta Bhere          | NULL  |         1 |
+|       9 |       9 | Cyber_Shakti      |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|       9 |       9 | Cyber_Shakti      |          3 | Manoj More            | NULL  |         1 |
+|       9 |       9 | Cyber_Shakti      |          2 | Aniket Takmare        | NULL  |         1 |
+|       9 |       9 | Cyber_Shakti      |          1 | Aditya Kansana        | NULL  |         1 |
+|      10 |      10 | AlgoVeer          |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      10 |      10 | AlgoVeer          |          5 | Shweta Bhere          | NULL  |         1 |
+|      10 |      10 | AlgoVeer          |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      10 |      10 | AlgoVeer          |          3 | Manoj More            | NULL  |         1 |
+|      10 |      10 | AlgoVeer          |          2 | Aniket Takmare        | NULL  |         1 |
+|      10 |      10 | AlgoVeer          |          1 | Aditya Kansana        | NULL  |         1 |
+|      11 |      11 | StackNova         |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      11 |      11 | StackNova         |          5 | Shweta Bhere          | NULL  |         1 |
+|      11 |      11 | StackNova         |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      11 |      11 | StackNova         |          3 | Manoj More            | NULL  |         1 |
+|      11 |      11 | StackNova         |          2 | Aniket Takmare        | NULL  |         1 |
+|      11 |      11 | StackNova         |          1 | Aditya Kansana        | NULL  |         1 |
+|      12 |      12 | Super 10          |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      12 |      12 | Super 10          |          5 | Shweta Bhere          | NULL  |         1 |
+|      12 |      12 | Super 10          |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      12 |      12 | Super 10          |          3 | Manoj More            | NULL  |         1 |
+|      12 |      12 | Super 10          |          2 | Aniket Takmare        | NULL  |         1 |
+|      12 |      12 | Super 10          |          1 | Aditya Kansana        | NULL  |         1 |
+|      13 |      13 | StackOfTen        |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      13 |      13 | StackOfTen        |          5 | Shweta Bhere          | NULL  |         1 |
+|      13 |      13 | StackOfTen        |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      13 |      13 | StackOfTen        |          3 | Manoj More            | NULL  |         1 |
+|      13 |      13 | StackOfTen        |          2 | Aniket Takmare        | NULL  |         1 |
+|      13 |      13 | StackOfTen        |          1 | Aditya Kansana        | NULL  |         1 |
+|      14 |      14 | CodeRaptors       |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      14 |      14 | CodeRaptors       |          5 | Shweta Bhere          | NULL  |         1 |
+|      14 |      14 | CodeRaptors       |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      14 |      14 | CodeRaptors       |          3 | Manoj More            | NULL  |         1 |
+|      14 |      14 | CodeRaptors       |          2 | Aniket Takmare        | NULL  |         1 |
+|      14 |      14 | CodeRaptors       |          1 | Aditya Kansana        | NULL  |         1 |
+|      15 |      15 | Access Modifiers  |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      15 |      15 | Access Modifiers  |          5 | Shweta Bhere          | NULL  |         1 |
+|      15 |      15 | Access Modifiers  |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      15 |      15 | Access Modifiers  |          3 | Manoj More            | NULL  |         1 |
+|      15 |      15 | Access Modifiers  |          2 | Aniket Takmare        | NULL  |         1 |
+|      15 |      15 | Access Modifiers  |          1 | Aditya Kansana        | NULL  |         1 |
+|      16 |      16 | CodeBlooded       |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      16 |      16 | CodeBlooded       |          5 | Shweta Bhere          | NULL  |         1 |
+|      16 |      16 | CodeBlooded       |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      16 |      16 | CodeBlooded       |          3 | Manoj More            | NULL  |         1 |
+|      16 |      16 | CodeBlooded       |          2 | Aniket Takmare        | NULL  |         1 |
+|      16 |      16 | CodeBlooded       |          1 | Aditya Kansana        | NULL  |         1 |
+|      17 |      17 | sa_Algoholics     |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      17 |      17 | sa_Algoholics     |          5 | Shweta Bhere          | NULL  |         1 |
+|      17 |      17 | sa_Algoholics     |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      17 |      17 | sa_Algoholics     |          3 | Manoj More            | NULL  |         1 |
+|      17 |      17 | sa_Algoholics     |          2 | Aniket Takmare        | NULL  |         1 |
+|      17 |      17 | sa_Algoholics     |          1 | Aditya Kansana        | NULL  |         1 |
+|      18 |      18 | Phoenix           |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      18 |      18 | Phoenix           |          5 | Shweta Bhere          | NULL  |         1 |
+|      18 |      18 | Phoenix           |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      18 |      18 | Phoenix           |          3 | Manoj More            | NULL  |         1 |
+|      18 |      18 | Phoenix           |          2 | Aniket Takmare        | NULL  |         1 |
+|      18 |      18 | Phoenix           |          1 | Aditya Kansana        | NULL  |         1 |
+|      19 |      19 | TechUdaan         |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      19 |      19 | TechUdaan         |          5 | Shweta Bhere          | NULL  |         1 |
+|      19 |      19 | TechUdaan         |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      19 |      19 | TechUdaan         |          3 | Manoj More            | NULL  |         1 |
+|      19 |      19 | TechUdaan         |          2 | Aniket Takmare        | NULL  |         1 |
+|      19 |      19 | TechUdaan         |          1 | Aditya Kansana        | NULL  |         1 |
+|      20 |      20 | Runtime Rebels    |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      20 |      20 | Runtime Rebels    |          5 | Shweta Bhere          | NULL  |         1 |
+|      20 |      20 | Runtime Rebels    |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      20 |      20 | Runtime Rebels    |          3 | Manoj More            | NULL  |         1 |
+|      20 |      20 | Runtime Rebels    |          2 | Aniket Takmare        | NULL  |         1 |
+|      20 |      20 | Runtime Rebels    |          1 | Aditya Kansana        | NULL  |         1 |
+|      21 |      21 | Binary 2 Infinity |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      21 |      21 | Binary 2 Infinity |          5 | Shweta Bhere          | NULL  |         1 |
+|      21 |      21 | Binary 2 Infinity |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      21 |      21 | Binary 2 Infinity |          3 | Manoj More            | NULL  |         1 |
+|      21 |      21 | Binary 2 Infinity |          2 | Aniket Takmare        | NULL  |         1 |
+|      21 |      21 | Binary 2 Infinity |          1 | Aditya Kansana        | NULL  |         1 |
+|      22 |      22 | Binary Bandits    |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      22 |      22 | Binary Bandits    |          5 | Shweta Bhere          | NULL  |         1 |
+|      22 |      22 | Binary Bandits    |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      22 |      22 | Binary Bandits    |          3 | Manoj More            | NULL  |         1 |
+|      22 |      22 | Binary Bandits    |          2 | Aniket Takmare        | NULL  |         1 |
+|      22 |      22 | Binary Bandits    |          1 | Aditya Kansana        | NULL  |         1 |
+|      23 |      23 | Algo-Warriors     |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      23 |      23 | Algo-Warriors     |          5 | Shweta Bhere          | NULL  |         1 |
+|      23 |      23 | Algo-Warriors     |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      23 |      23 | Algo-Warriors     |          3 | Manoj More            | NULL  |         1 |
+|      23 |      23 | Algo-Warriors     |          2 | Aniket Takmare        | NULL  |         1 |
+|      23 |      23 | Algo-Warriors     |          1 | Aditya Kansana        | NULL  |         1 |
+|      24 |      24 | Code-Mafia        |          6 | Vipul Tembulwar       | NULL  |         1 |
+|      24 |      24 | Code-Mafia        |          5 | Shweta Bhere          | NULL  |         1 |
+|      24 |      24 | Code-Mafia        |          4 | Shilbhushan Khanderao | NULL  |         1 |
+|      24 |      24 | Code-Mafia        |          3 | Manoj More            | NULL  |         1 |
+|      24 |      24 | Code-Mafia        |          2 | Aniket Takmare        | NULL  |         1 |
+|      24 |      24 | Code-Mafia        |          1 | Aditya Kansana        | NULL  |         1 |
++---------+---------+-------------------+------------+-----------------------+-------+-----------+
+144 rows in set (0.00 sec)
+
+mysql> select f.full_name as faculty , count(*) as student_count from student s inner join faculty f on f.faculty_id=s.faculty_id;
+ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'a25.f.full_name'; this is incompatible with sql_mode=only_full_group_by
+mysql> select f.full_name as faculty , count(*) as student_count from student s inner join faculty f on f.faculty_id=s.faculty_id group by f.full_name;
++-----------------------+---------------+
+| faculty               | student_count |
++-----------------------+---------------+
+| Aditya Kansana        |             4 |
+| Aniket Takmare        |             4 |
+| Manoj More            |             4 |
+| Shilbhushan Khanderao |             4 |
+| Shweta Bhere          |             4 |
+| Vipul Tembulwar       |             4 |
++-----------------------+---------------+
+6 rows in set (0.00 sec)
+
+mysql> select s.team_id, f.full_name as faculty , count(*) as student_count from student s inner join faculty f on f.faculty_id=s.faculty_id group by f.full_name;
+ERROR 1055 (42000): Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'a25.s.team_id' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select s.team_id, f.full_name as faculty , count(*) as student_count from student s inner join faculty f on f.faculty_id=s.faculty_id group by f.full_name, s.team_id;
++---------+-----------------------+---------------+
+| team_id | faculty               | student_count |
++---------+-----------------------+---------------+
+|       1 | Aditya Kansana        |             1 |
+|       2 | Aditya Kansana        |             1 |
+|      13 | Aditya Kansana        |             1 |
+|      14 | Aditya Kansana        |             1 |
+|       3 | Aniket Takmare        |             1 |
+|       4 | Aniket Takmare        |             1 |
+|      15 | Aniket Takmare        |             1 |
+|      16 | Aniket Takmare        |             1 |
+|       5 | Manoj More            |             1 |
+|       6 | Manoj More            |             1 |
+|      17 | Manoj More            |             1 |
+|      18 | Manoj More            |             1 |
+|       7 | Shilbhushan Khanderao |             1 |
+|       8 | Shilbhushan Khanderao |             1 |
+|      19 | Shilbhushan Khanderao |             1 |
+|      20 | Shilbhushan Khanderao |             1 |
+|       9 | Shweta Bhere          |             1 |
+|      10 | Shweta Bhere          |             1 |
+|      21 | Shweta Bhere          |             1 |
+|      22 | Shweta Bhere          |             1 |
+|      11 | Vipul Tembulwar       |             1 |
+|      12 | Vipul Tembulwar       |             1 |
+|      23 | Vipul Tembulwar       |             1 |
+|      24 | Vipul Tembulwar       |             1 |
++---------+-----------------------+---------------+
+24 rows in set (0.00 sec)
+
+mysql> select * from student limit 2;
++--------------+-----------------------------+------------+-----------+---------+------------+-------+
+| prn          | full_name                   | dob        | role_code | team_id | faculty_id | grade |
++--------------+-----------------------------+------------+-----------+---------+------------+-------+
+| 250840320001 | ) LT ( edarahK kohsA hsakaA | 2002-07-09 | NULL      |       1 |          1 |  9.09 |
+| 250840320002 | Aasif Jamal                 | 2003-12-01 | NULL      |    NULL |       NULL |  5.25 |
++--------------+-----------------------------+------------+-----------+---------+------------+-------+
+2 rows in set (0.00 sec)
+
+mysql> update student set faculty_id=1 where prn=250840320002;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from student limit 2;
++--------------+-----------------------------+------------+-----------+---------+------------+-------+
+| prn          | full_name                   | dob        | role_code | team_id | faculty_id | grade |
++--------------+-----------------------------+------------+-----------+---------+------------+-------+
+| 250840320001 | ) LT ( edarahK kohsA hsakaA | 2002-07-09 | NULL      |       1 |          1 |  9.09 |
+| 250840320002 | Aasif Jamal                 | 2003-12-01 | NULL      |    NULL |          1 |  5.25 |
++--------------+-----------------------------+------------+-----------+---------+------------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select s.team_id, f.full_name as faculty , count(*) as student_count from student s inner join faculty f on f.faculty_id=s.faculty_id group by f.full_name, s.team_id;
++---------+-----------------------+---------------+
+| team_id | faculty               | student_count |
++---------+-----------------------+---------------+
+|       1 | Aditya Kansana        |             1 |
+|    NULL | Aditya Kansana        |             1 |
+|       2 | Aditya Kansana        |             1 |
+|      13 | Aditya Kansana        |             1 |
+|      14 | Aditya Kansana        |             1 |
+|       3 | Aniket Takmare        |             1 |
+|       4 | Aniket Takmare        |             1 |
+|      15 | Aniket Takmare        |             1 |
+|      16 | Aniket Takmare        |             1 |
+|       5 | Manoj More            |             1 |
+|       6 | Manoj More            |             1 |
+|      17 | Manoj More            |             1 |
+|      18 | Manoj More            |             1 |
+|       7 | Shilbhushan Khanderao |             1 |
+|       8 | Shilbhushan Khanderao |             1 |
+|      19 | Shilbhushan Khanderao |             1 |
+|      20 | Shilbhushan Khanderao |             1 |
+|       9 | Shweta Bhere          |             1 |
+|      10 | Shweta Bhere          |             1 |
+|      21 | Shweta Bhere          |             1 |
+|      22 | Shweta Bhere          |             1 |
+|      11 | Vipul Tembulwar       |             1 |
+|      12 | Vipul Tembulwar       |             1 |
+|      23 | Vipul Tembulwar       |             1 |
+|      24 | Vipul Tembulwar       |             1 |
++---------+-----------------------+---------------+
+25 rows in set (0.00 sec)
+
+mysql> update student set team_id=1 where prn=250840320002;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select s.team_id, f.full_name as faculty , count(*) as student_count from student s inner join faculty f on f.faculty_id=s.faculty_id group by f.full_name, s.team_id;
++---------+-----------------------+---------------+
+| team_id | faculty               | student_count |
++---------+-----------------------+---------------+
+|       1 | Aditya Kansana        |             2 |
+|       2 | Aditya Kansana        |             1 |
+|      13 | Aditya Kansana        |             1 |
+|      14 | Aditya Kansana        |             1 |
+|       3 | Aniket Takmare        |             1 |
+|       4 | Aniket Takmare        |             1 |
+|      15 | Aniket Takmare        |             1 |
+|      16 | Aniket Takmare        |             1 |
+|       5 | Manoj More            |             1 |
+|       6 | Manoj More            |             1 |
+|      17 | Manoj More            |             1 |
+|      18 | Manoj More            |             1 |
+|       7 | Shilbhushan Khanderao |             1 |
+|       8 | Shilbhushan Khanderao |             1 |
+|      19 | Shilbhushan Khanderao |             1 |
+|      20 | Shilbhushan Khanderao |             1 |
+|       9 | Shweta Bhere          |             1 |
+|      10 | Shweta Bhere          |             1 |
+|      21 | Shweta Bhere          |             1 |
+|      22 | Shweta Bhere          |             1 |
+|      11 | Vipul Tembulwar       |             1 |
+|      12 | Vipul Tembulwar       |             1 |
+|      23 | Vipul Tembulwar       |             1 |
+|      24 | Vipul Tembulwar       |             1 |
++---------+-----------------------+---------------+
+24 rows in set (0.00 sec)
+
+mysql>
