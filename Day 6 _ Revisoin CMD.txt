@@ -1,0 +1,685 @@
+Day 6 _ Revisoin CMD 
+---------------------
+Microsoft Windows [Version 10.0.26100.6584]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Vipul>mysql -u dummy -pcdac123
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 47
+Server version: 8.0.39 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database revision;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use revision;
+Database changed
+mysql> Create table customers(
+    ->  Id int ,
+    -> Name varchar(20),
+    -> Email varchar(25),
+    -> City varchar(20)
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> desc customers;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| Id    | int         | YES  |     | NULL    |       |
+| Name  | varchar(20) | YES  |     | NULL    |       |
+| Email | varchar(25) | YES  |     | NULL    |       |
+| City  | varchar(20) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> set autocommit = 0
+    -> ;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select @@autocommit;
++--------------+
+| @@autocommit |
++--------------+
+|            0 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into customers values(1, "vipul","vipul@gmail.com","Mumbai");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into customers(name,email,city) values( "Khetesh","khetesh@gmail.com","Mumbai");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from customers;
++------+---------+-------------------+--------+
+| Id   | Name    | Email             | City   |
++------+---------+-------------------+--------+
+|    1 | vipul   | vipul@gmail.com   | Mumbai |
+| NULL | Khetesh | khetesh@gmail.com | Mumbai |
++------+---------+-------------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from customers;
+Empty set (0.00 sec)
+
+mysql> set autocommit = 1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into customers values(1, "vipul","vipul@gmail.com","Mumbai");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into customers(name,email,city) values( "Khetesh","khetesh@gmail.com","Mumbai");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from customers;
++------+---------+-------------------+--------+
+| Id   | Name    | Email             | City   |
++------+---------+-------------------+--------+
+|    1 | vipul   | vipul@gmail.com   | Mumbai |
+| NULL | Khetesh | khetesh@gmail.com | Mumbai |
++------+---------+-------------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> set autocommit = 0;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into customers(id,name,email,city) values(3,"Khetesh","khetesh@gmail.com","Mumbai"),(4,"Mohini","Mohini@gmail.com","Pune");
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> savepoint s1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> update customers set id=10 where id=4;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from customers;
++------+---------+-------------------+--------+
+| Id   | Name    | Email             | City   |
++------+---------+-------------------+--------+
+|    1 | vipul   | vipul@gmail.com   | Mumbai |
+| NULL | Khetesh | khetesh@gmail.com | Mumbai |
+|    3 | Khetesh | khetesh@gmail.com | Mumbai |
+|   10 | Mohini  | Mohini@gmail.com  | Pune   |
++------+---------+-------------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> rollback to s1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from customers;
++------+---------+-------------------+--------+
+| Id   | Name    | Email             | City   |
++------+---------+-------------------+--------+
+|    1 | vipul   | vipul@gmail.com   | Mumbai |
+| NULL | Khetesh | khetesh@gmail.com | Mumbai |
+|    3 | Khetesh | khetesh@gmail.com | Mumbai |
+|    4 | Mohini  | Mohini@gmail.com  | Pune   |
++------+---------+-------------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> set autocommit = 1;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> set autocommit = 0;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> update customers set id=2 where id=null;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from customers;
++------+---------+-------------------+--------+
+| Id   | Name    | Email             | City   |
++------+---------+-------------------+--------+
+|    1 | vipul   | vipul@gmail.com   | Mumbai |
+| NULL | Khetesh | khetesh@gmail.com | Mumbai |
+|    3 | Khetesh | khetesh@gmail.com | Mumbai |
+|    4 | Mohini  | Mohini@gmail.com  | Pune   |
++------+---------+-------------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> update customers set id=2 where id=NULL;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> update customers set id=2 where name="Khetesh";
+Query OK, 2 rows affected (0.00 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from customers;
++------+---------+-------------------+--------+
+| Id   | Name    | Email             | City   |
++------+---------+-------------------+--------+
+|    1 | vipul   | vipul@gmail.com   | Mumbai |
+|    2 | Khetesh | khetesh@gmail.com | Mumbai |
+|    2 | Khetesh | khetesh@gmail.com | Mumbai |
+|    4 | Mohini  | Mohini@gmail.com  | Pune   |
++------+---------+-------------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from customers;
++------+---------+-------------------+--------+
+| Id   | Name    | Email             | City   |
++------+---------+-------------------+--------+
+|    1 | vipul   | vipul@gmail.com   | Mumbai |
+| NULL | Khetesh | khetesh@gmail.com | Mumbai |
+|    3 | Khetesh | khetesh@gmail.com | Mumbai |
+|    4 | Mohini  | Mohini@gmail.com  | Pune   |
++------+---------+-------------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> update customers set id=2 where id is null;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> commit;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from customers;
++------+---------+-------------------+--------+
+| Id   | Name    | Email             | City   |
++------+---------+-------------------+--------+
+|    1 | vipul   | vipul@gmail.com   | Mumbai |
+|    2 | Khetesh | khetesh@gmail.com | Mumbai |
+|    3 | Khetesh | khetesh@gmail.com | Mumbai |
+|    4 | Mohini  | Mohini@gmail.com  | Pune   |
++------+---------+-------------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> create table tempp()
+    -> ^C
+mysql> create table tempp()
+    -> ^C
+mysql> create table tempp( name char(4), email varchar(4));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> insert into tempp values ("ab","AB");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into tempp values ("abcd","ABcd");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into tempp values ("abcde","ABcde");
+ERROR 1406 (22001): Data too long for column 'name' at row 1
+mysql> insert into tempp (email) values ("ABcde");
+ERROR 1406 (22001): Data too long for column 'email' at row 1
+mysql> create table tempp1( name char, email varchar);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql>
+mysql>
+mysql>
+mysql>
+mysql> rename table customers to cust1;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql>
+mysql>
+mysql> CREATE TABLE customers (
+    ->   customer_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->   name        VARCHAR(80) NOT NULL,
+    ->   email       VARCHAR(120) UNIQUE,
+    ->   city        VARCHAR(80)
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> CREATE TABLE orders (
+    ->   order_id     INT PRIMARY KEY AUTO_INCREMENT,
+    ->   customer_id  INT NOT NULL,
+    ->   order_date   DATE NOT NULL,
+    ->   amount       DECIMAL(10,2) NOT NULL CHECK (amount >= 0),
+    ->   status       ENUM('NEW','PAID','CANCELLED') DEFAULT 'NEW',
+    ->   CONSTRAINT fk_orders_customer FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql>
+mysql>
+mysql> INSERT INTO customers (name, email, city) VALUES
+    -> ('Amit Sharma','amit@shop.com','Mumbai'),
+    -> ('Bhavna Iyer','bhavna@shop.com','Pune'),
+    -> ('Chetan Rao','chetan@shop.com','Delhi'),
+    -> ('Divya Menon','divya@shop.com','Mumbai'),
+    -> ('Esha Khan','esha@shop.com','Bengaluru');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO orders (customer_id, order_date, amount, status) VALUES
+    -> (1,'2025-09-01',1200.00,'PAID'),
+    -> (1,'2025-09-10', 750.00,'PAID'),
+    -> (2,'2025-09-11',  99.00,'NEW'),
+    -> (3,'2025-09-12', 560.00,'CANCELLED'),
+    -> (3,'2025-09-20',2100.00,'PAID'),
+    -> (4,'2025-09-25', 300.00,'PAID'),
+    -> (5,'2025-09-30', 890.00,'NEW'),
+    -> (2,'2025-10-01', 450.00,'PAID');
+Query OK, 8 rows affected (0.01 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> select * From customers;
++-------------+-------------+-----------------+-----------+
+| customer_id | name        | email           | city      |
++-------------+-------------+-----------------+-----------+
+|           1 | Amit Sharma | amit@shop.com   | Mumbai    |
+|           2 | Bhavna Iyer | bhavna@shop.com | Pune      |
+|           3 | Chetan Rao  | chetan@shop.com | Delhi     |
+|           4 | Divya Menon | divya@shop.com  | Mumbai    |
+|           5 | Esha Khan   | esha@shop.com   | Bengaluru |
++-------------+-------------+-----------------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> select * From oders;
+ERROR 1146 (42S02): Table 'revision.oders' doesn't exist
+mysql> select * From orders;
++----------+-------------+------------+---------+-----------+
+| order_id | customer_id | order_date | amount  | status    |
++----------+-------------+------------+---------+-----------+
+|        1 |           1 | 2025-09-01 | 1200.00 | PAID      |
+|        2 |           1 | 2025-09-10 |  750.00 | PAID      |
+|        3 |           2 | 2025-09-11 |   99.00 | NEW       |
+|        4 |           3 | 2025-09-12 |  560.00 | CANCELLED |
+|        5 |           3 | 2025-09-20 | 2100.00 | PAID      |
+|        6 |           4 | 2025-09-25 |  300.00 | PAID      |
+|        7 |           5 | 2025-09-30 |  890.00 | NEW       |
+|        8 |           2 | 2025-10-01 |  450.00 | PAID      |
++----------+-------------+------------+---------+-----------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT customer_id, name, city
+    -> FROM customers
+    -> WHERE city IN ('Mumbai','Pune')
+    -> ORDER BY name ASC
+    -> LIMIT 3;
++-------------+-------------+--------+
+| customer_id | name        | city   |
++-------------+-------------+--------+
+|           1 | Amit Sharma | Mumbai |
+|           2 | Bhavna Iyer | Pune   |
+|           4 | Divya Menon | Mumbai |
++-------------+-------------+--------+
+3 rows in set (0.00 sec)
+
+mysql> Select customer_id, name, city
+    -> From customers
+    -> Where city=”Mumbai” and city=”Pune”
+    -> Order by name asc
+    -> Limit 3;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?Mumbai? and city=?Pune?
+Order by name asc
+Limit 3' at line 3
+mysql> Select customer_id, name, city
+    -> From customers
+    -> Where city=’Mumbai’ and city=’Pune’
+    -> Order by name asc
+    -> Limit 3;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?Mumbai? and city=?Pune?
+Order by name asc
+Limit 3' at line 3
+mysql> Select customer_id, name, city
+    -> From customers
+    -> Where city='Mumbai' and city='Pune'
+    -> Order by name asc
+    -> Limit 3;
+Empty set (0.00 sec)
+
+mysql> Select customer_id, name, city
+    -> From customers
+    -> Where city='Mumbai' or city='Pune'
+    -> Order by name asc
+    -> Limit 3;
++-------------+-------------+--------+
+| customer_id | name        | city   |
++-------------+-------------+--------+
+|           1 | Amit Sharma | Mumbai |
+|           2 | Bhavna Iyer | Pune   |
+|           4 | Divya Menon | Mumbai |
++-------------+-------------+--------+
+3 rows in set (0.00 sec)
+
+mysql> Select customer_id, name, city
+    -> From customers
+    -> Where city=’Mumbai’ or city=’Pune’
+    -> Order by name;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?Mumbai? or city=?Pune?
+Order by name' at line 3
+mysql> Select customer_id, name, city
+    -> From customers
+    -> Where city='Mumbai' or city='Pune'
+    -> Order by name
+    -> Limit 3;
++-------------+-------------+--------+
+| customer_id | name        | city   |
++-------------+-------------+--------+
+|           1 | Amit Sharma | Mumbai |
+|           2 | Bhavna Iyer | Pune   |
+|           4 | Divya Menon | Mumbai |
++-------------+-------------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select * from orders where date between "00-01-01" AND "2024-01-01";
+ERROR 1054 (42S22): Unknown column 'date' in 'where clause'
+mysql> select * from orders where order_date between "00-01-01" AND "2024-01-01";
+Empty set (0.00 sec)
+
+mysql> Select * from orders where status like "c%";
++----------+-------------+------------+--------+-----------+
+| order_id | customer_id | order_date | amount | status    |
++----------+-------------+------------+--------+-----------+
+|        4 |           3 | 2025-09-12 | 560.00 | CANCELLED |
++----------+-------------+------------+--------+-----------+
+1 row in set (0.00 sec)
+
+mysql> Select * from orders where status like "%";
++----------+-------------+------------+---------+-----------+
+| order_id | customer_id | order_date | amount  | status    |
++----------+-------------+------------+---------+-----------+
+|        1 |           1 | 2025-09-01 | 1200.00 | PAID      |
+|        2 |           1 | 2025-09-10 |  750.00 | PAID      |
+|        3 |           2 | 2025-09-11 |   99.00 | NEW       |
+|        4 |           3 | 2025-09-12 |  560.00 | CANCELLED |
+|        5 |           3 | 2025-09-20 | 2100.00 | PAID      |
+|        6 |           4 | 2025-09-25 |  300.00 | PAID      |
+|        7 |           5 | 2025-09-30 |  890.00 | NEW       |
+|        8 |           2 | 2025-10-01 |  450.00 | PAID      |
++----------+-------------+------------+---------+-----------+
+8 rows in set (0.00 sec)
+
+mysql> Select * from orders where status like "p%";
++----------+-------------+------------+---------+--------+
+| order_id | customer_id | order_date | amount  | status |
++----------+-------------+------------+---------+--------+
+|        1 |           1 | 2025-09-01 | 1200.00 | PAID   |
+|        2 |           1 | 2025-09-10 |  750.00 | PAID   |
+|        5 |           3 | 2025-09-20 | 2100.00 | PAID   |
+|        6 |           4 | 2025-09-25 |  300.00 | PAID   |
+|        8 |           2 | 2025-10-01 |  450.00 | PAID   |
++----------+-------------+------------+---------+--------+
+5 rows in set (0.00 sec)
+
+mysql> Select * from orders where status like "p____%";
+Empty set (0.00 sec)
+
+mysql> Select * from orders where status like "_A%";
++----------+-------------+------------+---------+-----------+
+| order_id | customer_id | order_date | amount  | status    |
++----------+-------------+------------+---------+-----------+
+|        1 |           1 | 2025-09-01 | 1200.00 | PAID      |
+|        2 |           1 | 2025-09-10 |  750.00 | PAID      |
+|        4 |           3 | 2025-09-12 |  560.00 | CANCELLED |
+|        5 |           3 | 2025-09-20 | 2100.00 | PAID      |
+|        6 |           4 | 2025-09-25 |  300.00 | PAID      |
+|        8 |           2 | 2025-10-01 |  450.00 | PAID      |
++----------+-------------+------------+---------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> select c.name , o.status from customer c inner join orders o on c.customer_id = o.customer_id;
+ERROR 1146 (42S02): Table 'revision.customer' doesn't exist
+mysql> select c.name , o.status from customers c inner join orders o on c.customer_id = o.customer_id;
++-------------+-----------+
+| name        | status    |
++-------------+-----------+
+| Amit Sharma | PAID      |
+| Amit Sharma | PAID      |
+| Bhavna Iyer | NEW       |
+| Bhavna Iyer | PAID      |
+| Chetan Rao  | CANCELLED |
+| Chetan Rao  | PAID      |
+| Divya Menon | PAID      |
+| Esha Khan   | NEW       |
++-------------+-----------+
+8 rows in set (0.00 sec)
+
+mysql> select c.name , o.status from customers c inner join orders o on c.customer_id = o.customer_id where o.status = paid;
+ERROR 1054 (42S22): Unknown column 'paid' in 'where clause'
+mysql> select c.name , o.status from customers c inner join orders o on c.customer_id = o.customer_id where o.status = "paid";
++-------------+--------+
+| name        | status |
++-------------+--------+
+| Amit Sharma | PAID   |
+| Amit Sharma | PAID   |
+| Chetan Rao  | PAID   |
+| Divya Menon | PAID   |
+| Bhavna Iyer | PAID   |
++-------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select c.name , o.status from orders o inner join customer c  on c.customer_id = o.customer_id where o.status = "paid";
+ERROR 1146 (42S02): Table 'revision.customer' doesn't exist
+mysql> select c.name , o.status from orders o inner join customers c  on c.customer_id = o.customer_id where o.status = "paid";
++-------------+--------+
+| name        | status |
++-------------+--------+
+| Amit Sharma | PAID   |
+| Amit Sharma | PAID   |
+| Chetan Rao  | PAID   |
+| Divya Menon | PAID   |
+| Bhavna Iyer | PAID   |
++-------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select c.name , o.status from orders o left join customers c  on c.customer_id = o.customer_id where o.status = "paid";
++-------------+--------+
+| name        | status |
++-------------+--------+
+| Amit Sharma | PAID   |
+| Amit Sharma | PAID   |
+| Chetan Rao  | PAID   |
+| Divya Menon | PAID   |
+| Bhavna Iyer | PAID   |
++-------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select c.name , o.status from orders o left join customers c  on c.customer_id = o.customer_id;
++-------------+-----------+
+| name        | status    |
++-------------+-----------+
+| Amit Sharma | PAID      |
+| Amit Sharma | PAID      |
+| Bhavna Iyer | NEW       |
+| Chetan Rao  | CANCELLED |
+| Chetan Rao  | PAID      |
+| Divya Menon | PAID      |
+| Esha Khan   | NEW       |
+| Bhavna Iyer | PAID      |
++-------------+-----------+
+8 rows in set (0.00 sec)
+
+mysql> select * from customers;
++-------------+-------------+-----------------+-----------+
+| customer_id | name        | email           | city      |
++-------------+-------------+-----------------+-----------+
+|           1 | Amit Sharma | amit@shop.com   | Mumbai    |
+|           2 | Bhavna Iyer | bhavna@shop.com | Pune      |
+|           3 | Chetan Rao  | chetan@shop.com | Delhi     |
+|           4 | Divya Menon | divya@shop.com  | Mumbai    |
+|           5 | Esha Khan   | esha@shop.com   | Bengaluru |
++-------------+-------------+-----------------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> select * from orders;
++----------+-------------+------------+---------+-----------+
+| order_id | customer_id | order_date | amount  | status    |
++----------+-------------+------------+---------+-----------+
+|        1 |           1 | 2025-09-01 | 1200.00 | PAID      |
+|        2 |           1 | 2025-09-10 |  750.00 | PAID      |
+|        3 |           2 | 2025-09-11 |   99.00 | NEW       |
+|        4 |           3 | 2025-09-12 |  560.00 | CANCELLED |
+|        5 |           3 | 2025-09-20 | 2100.00 | PAID      |
+|        6 |           4 | 2025-09-25 |  300.00 | PAID      |
+|        7 |           5 | 2025-09-30 |  890.00 | NEW       |
+|        8 |           2 | 2025-10-01 |  450.00 | PAID      |
++----------+-------------+------------+---------+-----------+
+8 rows in set (0.00 sec)
+
+mysql> insert into orders values (9,null,"2025-10-06",1000.0,new);
+ERROR 1054 (42S22): Unknown column 'new' in 'field list'
+mysql> insert into orders values (9,null,"2025-10-06",1000.0,"new");
+ERROR 1048 (23000): Column 'customer_id' cannot be null
+mysql> insert into customers values (6,"Mohini","Mohini@gmail.com","nagpur");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select c.name , o.status from orders o left join customers c  on c.customer_id = o.customer_id;
++-------------+-----------+
+| name        | status    |
++-------------+-----------+
+| Amit Sharma | PAID      |
+| Amit Sharma | PAID      |
+| Bhavna Iyer | NEW       |
+| Chetan Rao  | CANCELLED |
+| Chetan Rao  | PAID      |
+| Divya Menon | PAID      |
+| Esha Khan   | NEW       |
+| Bhavna Iyer | PAID      |
++-------------+-----------+
+8 rows in set (0.00 sec)
+
+mysql> select c.name , o.status from orders o right join customers c  on c.customer_id = o.customer_id;
++-------------+-----------+
+| name        | status    |
++-------------+-----------+
+| Amit Sharma | PAID      |
+| Amit Sharma | PAID      |
+| Bhavna Iyer | NEW       |
+| Bhavna Iyer | PAID      |
+| Chetan Rao  | CANCELLED |
+| Chetan Rao  | PAID      |
+| Divya Menon | PAID      |
+| Esha Khan   | NEW       |
+| Mohini      | NULL      |
++-------------+-----------+
+9 rows in set (0.00 sec)
+
+mysql> select max(order_date) from orders;
++-----------------+
+| max(order_date) |
++-----------------+
+| 2025-10-01      |
++-----------------+
+1 row in set (0.00 sec)
+
+mysql> select c.name max(o.order_date)
+    -> from customers c join orders o
+    -> on c.customer_id = o.customer_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'max(o.order_date)
+from customers c join orders o
+on c.customer_id = o.customer' at line 1
+mysql> select c.name, max(o.order_date)
+    -> from customers c join orders o
+    -> on c.customer_id = o.customer_id;
+ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'revision.c.name'; this is incompatible with sql_mode=only_full_group_by
+mysql> select c.name, max(o.order_date)
+    -> from customers c join orders o
+    -> on c.customer_id = o.customer_id
+    -> group by c.name;
++-------------+-------------------+
+| name        | max(o.order_date) |
++-------------+-------------------+
+| Amit Sharma | 2025-09-10        |
+| Bhavna Iyer | 2025-10-01        |
+| Chetan Rao  | 2025-09-20        |
+| Divya Menon | 2025-09-25        |
+| Esha Khan   | 2025-09-30        |
++-------------+-------------------+
+5 rows in set (0.00 sec)
+
+mysql> select c.customer_id, c.name, max(o.order_date)
+    -> from customers c join orders o
+    -> on c.customer_id = o.customer_id
+    -> group by c.name;
+ERROR 1055 (42000): Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'revision.c.customer_id' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select c.customer_id, c.name, max(o.order_date)
+    -> from customers c join orders o
+    -> on c.customer_id = o.customer_id
+    -> group by c.customer_id, c.name;
++-------------+-------------+-------------------+
+| customer_id | name        | max(o.order_date) |
++-------------+-------------+-------------------+
+|           1 | Amit Sharma | 2025-09-10        |
+|           2 | Bhavna Iyer | 2025-10-01        |
+|           3 | Chetan Rao  | 2025-09-20        |
+|           4 | Divya Menon | 2025-09-25        |
+|           5 | Esha Khan   | 2025-09-30        |
++-------------+-------------+-------------------+
+5 rows in set (0.00 sec)
+
+mysql> select c.customer_id, c.name, max(o.order_date)
+    -> from customers c join orders o
+    -> on c.customer_id = o.customer_id
+    -> group by c.customer_id, c.name having month(10);
+Empty set, 1 warning (0.00 sec)
+
+mysql> show warnings;
++---------+------+--------------------------------+
+| Level   | Code | Message                        |
++---------+------+--------------------------------+
+| Warning | 1292 | Incorrect datetime value: '10' |
++---------+------+--------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select c.customer_id, c.name, max(o.order_date)
+    -> from customers c join orders o
+    -> on c.customer_id = o.customer_id
+    -> group by c.customer_id, c.name having month(order_date)=10;
+ERROR 1054 (42S22): Unknown column 'order_date' in 'having clause'
+mysql> select c.customer_id, c.name, max(o.order_date)
+    -> from customers c join orders o
+    -> on c.customer_id = o.customer_id
+    -> group by c.customer_id, c.name having month(o.order_date)=10;
+ERROR 1054 (42S22): Unknown column 'o.order_date' in 'having clause'
+mysql> select c.customer_id, c.name, max(o.order_date)
+    -> from customers c join orders o
+    -> on c.customer_id = o.customer_id
+    -> group by c.customer_id, c.name having month(max(o.order_date))=10;
++-------------+-------------+-------------------+
+| customer_id | name        | max(o.order_date) |
++-------------+-------------+-------------------+
+|           2 | Bhavna Iyer | 2025-10-01        |
++-------------+-------------+-------------------+
+1 row in set (0.00 sec)
+
+mysql> select c.customer_id, c.name, max(o.order_date)
+    -> from customers c join orders o
+    -> on c.customer_id = o.customer_id
+    -> group by c.customer_id, c.name having month(max(o.order_date))=9;
++-------------+-------------+-------------------+
+| customer_id | name        | max(o.order_date) |
++-------------+-------------+-------------------+
+|           1 | Amit Sharma | 2025-09-10        |
+|           3 | Chetan Rao  | 2025-09-20        |
+|           4 | Divya Menon | 2025-09-25        |
+|           5 | Esha Khan   | 2025-09-30        |
++-------------+-------------+-------------------+
+4 rows in set (0.00 sec)
+
+mysql>
