@@ -1,0 +1,298 @@
+select name from customers where name like "a%";
++-------------+
+| name        |
++-------------+
+| Amit Sharma |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select name from customers where name like "a%" and name like "b%";
+Empty set (0.00 sec)
+
+mysql> select name from customers where name like "a%"
+    -> union
+    -> select name from customers where name like "b%";
++-------------+
+| name        |
++-------------+
+| Amit Sharma |
+| Bhavna Iyer |
++-------------+
+2 rows in set (0.00 sec)
+
+-----
+select name from customers where name like "a%"
+    union all
+  select name from customers where name like "b%" or name like "c%";
+-----
+select c.name, o.status from customers c inner join orders o on c.customer_id = o.customer_id
+union
+select c.name, o.status from customers c inner join orders o on c.customer_id = o.customer_id;
++-------------+-----------+
+| name        | status    |
++-------------+-----------+
+| Amit Sharma | PAID      |
+| Bhavna Iyer | NEW       |
+| Chetan Rao  | CANCELLED |
+| Chetan Rao  | PAID      |
+| Divya Menon | PAID      |
+| Esha Khan   | NEW       |
+| Bhavna Iyer | PAID      |
++-------------+-----------+
+7 rows in set (0.00 sec)
+-------------
+select c.name, o.status from customers c inner join orders o on c.customer_id = o.customer_id
+union all
+select c.name, o.status from customers c inner join orders o on c.customer_id = o.customer_id;
++-------------+-----------+
+| name        | status    |
++-------------+-----------+
+| Amit Sharma | PAID      |
+| Amit Sharma | PAID      |
+| Bhavna Iyer | NEW       |
+| Chetan Rao  | CANCELLED |
+| Chetan Rao  | PAID      |
+| Divya Menon | PAID      |
+| Esha Khan   | NEW       |
+| Bhavna Iyer | PAID      |
+| Amit Sharma | PAID      |
+| Amit Sharma | PAID      |
+| Bhavna Iyer | NEW       |
+| Chetan Rao  | CANCELLED |
+| Chetan Rao  | PAID      |
+| Divya Menon | PAID      |
+| Esha Khan   | NEW       |
+| Bhavna Iyer | PAID      |
++-------------+-----------+
+16 rows in set (0.00 sec)
+-------------------------------
+
+SELECT name, city FROM customers WHERE city = 'Mumbai'
+UNION
+SELECT c.name, c.city FROM customers c JOIN orders o ON c.customer_id = o.customer_id WHERE o.status = 'PAID';
++-------------+--------+
+| name        | city   |
++-------------+--------+
+| Amit Sharma | Mumbai |
+| Divya Menon | Mumbai |
+| Chetan Rao  | Delhi  |
+| Bhavna Iyer | Pune   |
++-------------+--------+
+4 rows in set (0.00 sec)
+--------------------------
+
+SELECT name, city FROM customers WHERE city = 'Mumbai'
+UNION all
+SELECT c.name, c.city FROM customers c JOIN orders o ON c.customer_id = o.customer_id WHERE o.status = 'PAID';
+
++-------------+--------+
+| name        | city   |
++-------------+--------+
+| Amit Sharma | Mumbai |
+| Divya Menon | Mumbai |
+| Amit Sharma | Mumbai |
+| Amit Sharma | Mumbai |
+| Chetan Rao  | Delhi  |
+| Divya Menon | Mumbai |
+| Bhavna Iyer | Pune   |
++-------------+--------+
+7 rows in set (0.00 sec)
+-------------------------
+SELECT c.customer_id, c.name, o.order_id, o.amount, o.status FROM customers c LEFT JOIN orders o ON c.customer_id= o.customer_id
+UNION
+SELECT c.customer_id, c.name, o.order_id, o.amount, o.status FROM customers c RIGHT JOIN orders o ON c.customer_id = o.customer_id;
++-------------+-------------+----------+---------+-----------+
+| customer_id | name        | order_id | amount  | status    |
++-------------+-------------+----------+---------+-----------+
+|           1 | Amit Sharma |        1 | 1200.00 | PAID      |
+|           1 | Amit Sharma |        2 |  750.00 | PAID      |
+|           2 | Bhavna Iyer |        3 |   99.00 | NEW       |
+|           2 | Bhavna Iyer |        8 |  450.00 | PAID      |
+|           3 | Chetan Rao  |        4 |  560.00 | CANCELLED |
+|           3 | Chetan Rao  |        5 | 2100.00 | PAID      |
+|           4 | Divya Menon |        6 |  300.00 | PAID      |
+|           5 | Esha Khan   |        7 |  890.00 | NEW       |
+|           6 | Mohini      |     NULL |    NULL | NULL      |
++-------------+-------------+----------+---------+-----------+
+9 rows in set (0.00 sec)
+-------------------------------------------------------------------------------------
+
+SELECT c.customer_id, c.name, o.order_id, o.amount, o.status FROM customers c LEFT JOIN orders o ON c.customer_id= o.customer_id
+UNION all
+SELECT c.customer_id, c.name, o.order_id, o.amount, o.status FROM customers c RIGHT JOIN orders o ON c.customer_id = o.customer_id;
++-------------+-------------+----------+---------+-----------+
+| customer_id | name        | order_id | amount  | status    |
++-------------+-------------+----------+---------+-----------+
+|           1 | Amit Sharma |        1 | 1200.00 | PAID      |
+|           1 | Amit Sharma |        2 |  750.00 | PAID      |
+|           2 | Bhavna Iyer |        3 |   99.00 | NEW       |
+|           2 | Bhavna Iyer |        8 |  450.00 | PAID      |
+|           3 | Chetan Rao  |        4 |  560.00 | CANCELLED |
+|           3 | Chetan Rao  |        5 | 2100.00 | PAID      |
+|           4 | Divya Menon |        6 |  300.00 | PAID      |
+|           5 | Esha Khan   |        7 |  890.00 | NEW       |
+|           6 | Mohini      |     NULL |    NULL | NULL      |
+|           1 | Amit Sharma |        1 | 1200.00 | PAID      |
+|           1 | Amit Sharma |        2 |  750.00 | PAID      |
+|           2 | Bhavna Iyer |        3 |   99.00 | NEW       |
+|           3 | Chetan Rao  |        4 |  560.00 | CANCELLED |
+|           3 | Chetan Rao  |        5 | 2100.00 | PAID      |
+|           4 | Divya Menon |        6 |  300.00 | PAID      |
+|           5 | Esha Khan   |        7 |  890.00 | NEW       |
+|           2 | Bhavna Iyer |        8 |  450.00 | PAID      |
++-------------+-------------+----------+---------+-----------+
+17 rows in set (0.00 sec)
+
+-----------------------------------------------------
+SELECT c.customer_id, c.name FROM customers c LEFT JOIN orders o ON c.customer_id= o.customer_id
+UNION
+SELECT c.customer_id, c.name FROM customers c RIGHT JOIN orders o ON c.customer_id = o.customer_id;
++-------------+-------------+
+| customer_id | name        |
++-------------+-------------+
+|           1 | Amit Sharma |
+|           2 | Bhavna Iyer |
+|           3 | Chetan Rao  |
+|           4 | Divya Menon |
+|           5 | Esha Khan   |
+|           6 | Mohini      |
++-------------+-------------+
+6 rows in set (0.00 sec)
+----------------------------------------------------
+
+
+Q. Find all customers and mark whether they have placed any order or not
+
+SELECT c.customer_id, c.name,
+       IF(o.order_id IS NULL, 'No Order', 'Has Order') AS order_statussssss
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+
+UNION
+
+SELECT c.customer_id, c.name,
+       IF(o.order_id IS NULL, 'No Order', 'Has Order') AS order_statussssss
+FROM customers c
+RIGHT JOIN orders o ON c.customer_id = o.customer_id;
+
+
+
+----------------------
+
+SELECT c.customer_id, c.name,
+       IF(o.order_id IS NOT NULL, 'Has Order', 'No Order') AS order_statussssss
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+
+UNION
+
+SELECT c.customer_id, c.name,
+       IF(o.order_id IS NOT NULL, 'Has Order', 'No Order') AS order_statussssss
+FROM customers c
+RIGHT JOIN orders o ON c.customer_id = o.customer_id;
+
+--------------------------------
+
+
+SELECT c.customer_id, c.name, o.order_id
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+WHERE o.order_id IS NULL
+
+UNION all
+
+SELECT c.customer_id, c.name, o.order_id
+FROM customers c
+RIGHT JOIN orders o ON c.customer_id = o.customer_id
+WHERE c.customer_id IS NULL;
+
+-------------------------------------------------------
+** Calculated column **
+select amount*10 from orders;
++-----------+
+| amount*10 |
++-----------+
+|  12000.00 |
+|   7500.00 |
+|    990.00 |
+|   5600.00 |
+|  21000.00 |
+|   3000.00 |
+|   8900.00 |
+|   4500.00 |
++-----------+
+8 rows in set (0.00 sec)
+
+mysql> select amount*10 as selling_price from orders;
++---------------+
+| selling_price |
++---------------+
+|      12000.00 |
+|       7500.00 |
+|        990.00 |
+|       5600.00 |
+|      21000.00 |
+|       3000.00 |
+|       8900.00 |
+|       4500.00 |
++---------------+
+8 rows in set (0.00 sec)
+-----------------------------------------
+
+
+group by explaination
+
+ select amount, max(amount) from orders group by amount;
++---------+-------------+
+| amount  | max(amount) |
++---------+-------------+
+| 1200.00 |     1200.00 |
+|  750.00 |      750.00 |
+|   99.00 |       99.00 |
+|  560.00 |      560.00 |
+| 2100.00 |     2100.00 |
+|  300.00 |      300.00 |
+|  890.00 |      890.00 |
+|  450.00 |      450.00 |
++---------+-------------+
+8 rows in set (0.00 sec)
+
+mysql> select customer_id, max(amount) from orders group by customer_id;
++-------------+-------------+
+| customer_id | max(amount) |
++-------------+-------------+
+|           1 |     1200.00 |
+|           2 |      450.00 |
+|           3 |     2100.00 |
+|           4 |      300.00 |
+|           5 |      890.00 |
++-------------+-------------+
+5 rows in set (0.00 sec)
+
+
+mysql> select c.customer_id , max(o.amount) from customers c left join orders o on c.customer_id=o.customer_id group by c.customer_id;
++-------------+---------------+
+| customer_id | max(o.amount) |
++-------------+---------------+
+|           1 |       1200.00 |
+|           2 |        450.00 |
+|           3 |       2100.00 |
+|           4 |        300.00 |
+|           5 |        890.00 |
+|           6 |          NULL |
++-------------+---------------+
+6 rows in set (0.00 sec)
+
+
+mysql> select c.customer_id , sum(o.amount) from customers c left join orders o on c.customer_id=o.customer_id group by c.customer_id;
++-------------+---------------+
+| customer_id | sum(o.amount) |
++-------------+---------------+
+|           1 |       1950.00 |
+|           2 |        549.00 |
+|           3 |       2660.00 |
+|           4 |        300.00 |
+|           5 |        890.00 |
+|           6 |          NULL |
++-------------+---------------+
+6 rows in set (0.00 sec)
