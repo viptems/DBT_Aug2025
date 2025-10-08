@@ -1,0 +1,128 @@
+CREATE TABLE Employee (
+    EmpID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Dept VARCHAR(50),
+    Salary INT
+);
+INSERT INTO Employee VALUES
+(1, 'Alice',   'HR',      30000),
+(2, 'Bob',     'IT',      45000),
+(3, 'Charlie', 'HR',      40000),
+(4, 'David',   'Finance', 55000),
+(5, 'Eva',     'IT',      60000),
+(6, 'Frank',   'Finance', 50000),
+(7, 'Grace',   'HR',      35000),
+(8, 'Hank',    'IT',      70000),
+(9, 'Ivy',     'Finance', 45000),
+(10,'Jack',    'IT',      40000);
+
+--------------------------------------
+only use Employee table :
+-----------------------------Group BY & Having Clause ------------
+Q1. Find the total salary paid in each department.
+Q2. Find the average salary of each department.
+Q3. Find departments where total salary is more than 150000.
+Q4. Find departments having more than 2 employees.
+Q5. Find the highest salary in each department.
+Q6. Find departments where the average salary is greater than 40000.
+Q7. Find the number of employees in each department, but only show departments with total salary > 100000.
+----------------------------------------------------------------------------------------------------------
+
+--------------Views --------------------
+
+Q1. Create a simple view of all IT employees. & Query the view.
+Q2. Create an aggregate view with department stats. & Query the view ( See dept stats)
+Q3. Updatable view for low-paid HR employees (then update low-paid HR salary by 10000 through the view). 
+Q4. A view with computed column Salary Band
+    (
+        salary band =
+    If salary is >60000 , then show computed column as "High Salary".
+    If salary is >40000 , then show computed column as "Mid Salary".
+    ).
+
+Q5. Replace view 
+Q6. Drop view
+--------------- Subquery --------------------
+Q01. Single-row subquery : Find the second highest salary overall.
+Q02. Single-row subquery per dept : Find Highest salary in HR.
+Q03. Multi-row subquery (IN): Departments that have someone earning ₹45,000.
+Q04. Multi-row with ANY: Employees who earn more than any HR salary (i.e., > min HR).
+Q05. Multi-row with ALL: Employees who earn more than all HR salaries (i.e., > max HR).
+Q06. Scalar subquery in SELECT: Show each employee with their department average.
+Q07. Correlated subquery: Employees who earn above their department average.
+Q08. Correlated subquery: Employees who are the top earner in their department.
+Q09. EXISTS: Employees in departments with more than 3 employees.
+Q10. NOT EXISTS: Employees who have the minimum salary in their department.
+Q11. Derived table (subquery in FROM): Department-wise stats joined back to employees.
+Q12. Find employees whose salary equals the department maximum (using IN + subquery).
+Q13. Find the top 3 salaries overall using a subquery filter.
+Q14. Find employees earning within the top 2 salaries in their department (derived table + window function alternative also shown).
+Q15. mployees whose salary is below their department minimum + 5k (parameterized threshold idea).
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+CREATE TABLE Dept (
+    DeptID INT PRIMARY KEY,
+    DeptName VARCHAR(50)
+);
+
+CREATE TABLE Emp (
+    EmpID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Salary INT,
+    DeptID INT,
+    FOREIGN KEY (DeptID) REFERENCES Dept(DeptID)
+);
+INSERT INTO Dept VALUES
+(1, 'HR'),
+(2, 'IT'),
+(3, 'Finance');
+
+INSERT INTO Emp VALUES
+(101, 'Alice',   30000, 1),
+(102, 'Bob',     45000, 2),
+(103, 'Charlie', 40000, 1),
+(104, 'David',   55000, 3),
+(105, 'Eva',     60000, 2),
+(106, 'Frank',   50000, 3),
+(107, 'Grace',   35000, 1),
+(108, 'Hank',    70000, 2),
+(109, 'Ivy',     45000, 3),
+(110, 'Jack',    40000, 2);
+
+---------------------------------------------
+Use both table , dept & emp :
+-----------------------------Group BY & Having Clause ------------
+Q1. List all employees with their department names.
+Q2. Find the total salary of each department.
+Q3. Find the average salary of each department, but only show those departments where average salary > 45000.
+Q4. Find departments with more than 2 employees.
+Q5. Find the highest salary in each department.
+Q6. Show departments where total salary > 150000, along with number of employees.
+Q7. List employees who earn more than the average salary of their department. ( wait for subquery )
+
+--------------Views ( joins )--------------------
+
+You can create similar view give above with join keeping columns from both the tables.
+
+---------------Subquery ( joins )---------------------------
+Q01. Show each employee with their department name (scalar subquery).
+Q02. Show Employees earning more than their department average (correlated).
+Q03. Show Employees whose salary equals the maximum in their department.
+Q04. Show Department with the highest average salary (single-row subquery).
+Q05. Show Departments having more than 3 employees (EXISTS/HAVING).
+Q06. Show Employees in the ‘IT’ department using a subquery on Dept.
+Q07. Show Employees earning more than ALL HR salaries.
+Q08. List departments with no employees (anti-exists). 
+Q09. Employees who share the same salary with someone else in the same department.
+Q10. Second highest salary overall
+Q11. Top 2 earners per department (window function, MySQL 8+).
+Q12. Find employees whose salary is within the top 3 salaries overall.
+Q13. Derived table: join back department aggregates (avg & max).
+Q14. Employees whose salary is below (dept minimum + 5000).
+Q15. Department(s) where all employees earn at least 45,000
+--------------------------------------------------------------------
+
+
+jitna possible utna try karo... baki skip.... 
+kuch ques adv wale h, jo lecture mai nhi hue......require R&D.
