@@ -389,6 +389,28 @@ DROP INDEX old_name ON table_name;
 CREATE INDEX new_name ON table_name(column);
 
 -----------------------------------------------
+select * from customers where city="mumbai";
+
+ explain select * from customers where city="mumbai";
+
+
+-------------------------------------
+
+create index idx_name_email on customers(name,email);
+Query OK, 0 rows affected (0.13 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+select * from customers where name="Amit Sharma" and email="amit@shop.com";
+explain select * from customers where name="Amit Sharma" and email="amit@shop.com";
+
+
+explain select * from customers where name="Amit Sharma"; - index will work
+explain select * from customers where email="Amit@shop.com"; - its regular search in your table
+
+------------------------------------------------------------------------
+
+create table table_name () storage_engine = InnoDb;
+
 
 ===============================================
 select * from orders;
