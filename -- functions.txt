@@ -1,0 +1,356 @@
+-- functions And Procedure
+
+
+-- Simple greet function
+
+delimiter ?? 
+create function Greet_customer(cust_name varchar(20))
+returns varchar(100)
+deterministic
+begin
+	return concat('hello ',cust_name);
+end ??
+delimiter ;
+
+To call the function use Select like :
+
+select Greet_customer("vipul");
++-------------------------+
+| Greet_customer("vipul") |
++-------------------------+
+| hello vipul             |
++-------------------------+
+1 row in set (0.00 sec)
+-------------------------------------------------------
+-- city wise customer count 
+
+delimiter //
+create function count_cust_citywise(city_name varchar(100))
+returns int 
+deterministic
+begin
+	declare total int;
+	select count(*) into total from customers where city = city_name;
+	return total;
+end //
+delimiter ;
+
+Select count_cust_citywise("nanded");
++-------------------------------+
+| count_cust_citywise("nanded") |
++-------------------------------+
+|                             0 |
++-------------------------------+
+1 row in set (0.00 sec)
+
+mysql> Select count_cust_citywise("Mumbai");
++-------------------------------+
+| count_cust_citywise("Mumbai") |
++-------------------------------+
+|                             2 |
++-------------------------------+
+1 row in set (0.00 sec)
+------------------------------------------------------------------
+
+-- get the initial 
+
+delimiter //
+create function get_initials(fn varchar(100))
+returns varchar(10)
+deterministic
+begin 
+	return concat(left(substring_index(fn," ",1),1),
+left(substring_index(fn," ",-1),1));
+end //
+delimiter ;
+
+select name, get_initials(name) from customers;
++-------------+--------------------+
+| name        | get_initials(name) |
++-------------+--------------------+
+| Amit Sharma | AS                 |
+| Bhavna Iyer | BI                 |
+| Chetan Rao  | CR                 |
+| Divya Menon | DM                 |
+| Esha Khan   | EK                 |
+| Mohini      | MM                 |
++-------------+--------------------+
+6 rows in set (0.00 sec)
+
+-----------------------------------------------------------
+
+delimiter //
+create function get_username(email varchar(100))
+returns varchar(10)
+deterministic
+begin 
+	return substring_index(email,"@",1);
+end //
+delimiter ;
+
++------------------+----------+
+| email            | username |
++------------------+----------+
+| amit@shop.com    | amit     |
+| bhavna@shop.com  | bhavna   |
+| chetan@shop.com  | chetan   |
+| divya@shop.com   | divya    |
+| esha@shop.com    | esha     |
+| Mohini@gmail.com | Mohini   |
++------------------+----------+
+6 rows in set (0.00 sec)
+
+
+---------------------------------------------------
+
+select c.name, sum(o.amount) from customers c inner join orders o on c.customer_id = o.customer_id group by c.name;
+
++-------------+---------------+
+| name        | sum(o.amount) |
++-------------+---------------+
+| Amit Sharma |       1950.00 |
+| Bhavna Iyer |        549.00 |
+| Chetan Rao  |       2660.00 |
+| Divya Menon |        300.00 |
+| Esha Khan   |       1390.00 |
++-------------+---------------+
+5 rows in set (0.01 sec)
+
+------------------------
+
+delimiter //
+create function get_username_Total_amount1()
+returns int
+deterministic
+begin 
+	declare cust_total_amount int;
+	select sum(o.amount) into cust_total_amount from customers c , orders o where  c.customer_id = o.customer_id  group by c.name;
+	return cust_total_amount;
+end //
+delimiter ;
+
+
+ERROR 1172 (42000): Result consisted of more than one row
+
+---------------------------------------------------------------
+
+select sum(amount) from orders group by customer_id having sum(amount) = (select sum(amount) from orders where customer_id = 1 );
++-------------+
+| sum(amount) |
++-------------+
+|     1950.00 |
++-------------+
+1 row in set (0.00 sec)
+---------------------------------------------------------------
+
+-- user total expenditure
+
+delimiter //
+create function get_username_Total_amount2(cust_id int)
+returns int
+deterministic
+begin 
+	declare cust_total_amount int;
+	select sum(amount) into cust_total_amount from orders group by customer_id having sum(amount) = (select sum(amount) from orders where customer_id = cust_id );
+	return cust_total_amount;
+end //
+delimiter ;
+
+
+select name, get_username_total_amount2(customer_id) from customers;
++-------------+-----------------------------------------+
+| name        | get_username_total_amount2(customer_id) |
++-------------+-----------------------------------------+
+| Amit Sharma |                                    1950 |
+| Bhavna Iyer |                                     549 |
+| Chetan Rao  |                                    2660 |
+| Divya Menon |                                     300 |
+| Esha Khan   |                                    1390 |
+| Mohini      |                                    NULL |
++-------------+-----------------------------------------+
+6 rows in set (0.01 sec)
+
+-------------------------------------------------------------------------------------------
+select sum(amount) from orders group by customer_id having customer_id = 1;
+
++-------------+
+| sum(amount) |
++-------------+
+|     1950.00 |
++-------------+
+1 row in set (0.00 sec)
+-----------------------------------------------------------------------------------------------------
+
+* Procedure *
+-- get all orders
+
+delimiter //
+create procedure getallorder(IN id int)
+begin 
+	select * from orders;
+end // 
+delimiter ;
+
+call getallorder(2);
+-------------------------------------------
+
+delimiter // 
+create procedure insertData(IN cust_ID int, IN cust_name varchar(30),IN cust_email varchar(50), IN cust_city varchar(30))
+begin 
+	insert into customers values(cust_id,cust_name,cust_email,cust_city);
+end //
+delimiter ;
+
+call insertdata(8,"Mohit Sarode" , "Mohit@gmail.com" , "jalgoan");
+
+-------------------------------------
+-- username, total-OF-all-order
+
+create P , totalorder(IN cust_id int, OUT total int)
+
+
+
+call totalorder(1,@total);
+select @total;  -- 1950
+
+----------------------------------------------
+
+
+
+
+
+
+-- Mark an order PAID with simple safety checks (IN; feedback via OUT)
+DELIMITER //
+
+DROP PROCEDURE IF EXISTS mark_order_paid;
+//
+CREATE PROCEDURE mark_order_paid(
+  IN  p_order_id BIGINT,
+  OUT p_msg      VARCHAR(100)
+)
+BEGIN
+  DECLARE v_exists INT DEFAULT 0;
+
+  SELECT COUNT(*) INTO v_exists FROM orders WHERE order_id = p_order_id;
+
+  IF v_exists = 0 THEN
+    SET p_msg = CONCAT('Order ', p_order_id, ' not found');
+  ELSE
+    UPDATE orders SET status='PAID' WHERE order_id = p_order_id;
+
+    IF ROW_COUNT() = 0 THEN
+      SET p_msg = 'No change (already PAID or same status)';
+    ELSE
+      SET p_msg = 'Order updated to PAID';
+    END IF;
+  END IF;
+END //
+//
+DELIMITER ;
+
+
+ call mark_order_paid(7, @p_msg);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select @p_msg;
++-----------------------+
+| @p_msg                |
++-----------------------+
+| Order updated to PAID |
++-----------------------+
+1 row in set (0.00 sec)
+
+
+call mark_order_paid(5, @p_msg);
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select @p_msg;
++-----------------------------------------+
+| @p_msg                                  |
++-----------------------------------------+
+| No change (already PAID or same status) |
++-----------------------------------------+
+
+call mark_order_paid(10, @p_msg);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select @p_msg;
++--------------------+
+| @p_msg             |
++--------------------+
+| Order 10 not found |
++--------------------+
+1 row in set (0.00 sec)
+-------------------------------------------------------------------
+function name - Greet_customer(cust_name varchar(20))
+
+delimiter // 
+create procedure greet_cust(IN name varchar(20), out greet_msg varchar(100))
+begin
+	declare msg varchar(20);
+	select greet_customer(name) into greet_msg;
+end //
+delimiter ;
+
+mysql> call greet_cust("vipul", @m);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select @m;
++-------------+
+| @m          |
++-------------+
+| hello vipul |
++-------------+
+1 row in set (0.00 sec)	
+
+
+
+delimiter // 
+create procedure greet_cust1(IN name varchar(20))
+begin
+	
+	select greet_customer(name);
+end //
+delimiter ;
+
+call greet_cust1("vipul");
+
+
+
+------------------------------------------------
+
+if we missed deterministic in user defined function syntax :
+ERROR 1418 (HY000): This function has none of DETERMINISTIC, NO SQL, or READS SQL DATA in its declaration and binary logging is enabled (you *might* want to use the less safe log_bin_trust_function_creators variable)
+
+==========================================================
+select * from customers;
++-------------+--------------+------------------+-----------+
+| customer_id | name         | email            | city      |
++-------------+--------------+------------------+-----------+
+|           1 | Amit Sharma  | amit@shop.com    | Mumbai    |
+|           2 | Bhavna Iyer  | bhavna@shop.com  | Pune      |
+|           3 | Chetan Rao   | chetan@shop.com  | Delhi     |
+|           4 | Divya Menon  | divya@shop.com   | Mumbai    |
+|           5 | Esha Khan    | esha@shop.com    | Bengaluru |
+|           6 | Mohini       | Mohini@gmail.com | Nagpur    |
+|           7 | Dhiraj Patil | Dhiraj@gmail.com | jalgoan   |
+|           8 | Mohit Sarode | Mohit@gmail.com  | jalgoan   |
++-------------+--------------+------------------+-----------+
+8 rows in set (0.00 sec)
+
+select * from orders;
++----------+-------------+------------+---------+-----------+
+| order_id | customer_id | order_date | amount  | status    |
++----------+-------------+------------+---------+-----------+
+|        1 |           1 | 2025-09-01 | 1200.00 | PAID      |
+|        2 |           1 | 2025-09-10 |  750.00 | PAID      |
+|        3 |           2 | 2025-09-11 |   99.00 | NEW       |
+|        4 |           3 | 2025-09-12 |  560.00 | CANCELLED |
+|        5 |           3 | 2025-09-20 | 2100.00 | PAID      |
+|        6 |           4 | 2025-09-25 |  300.00 | PAID      |
+|        7 |           5 | 2025-09-30 |  890.00 | NEW       |
+|        8 |           2 | 2025-10-01 |  450.00 | PAID      |
+|        9 |           5 | 2025-10-08 |  500.00 | PAID      |
++----------+-------------+------------+---------+-----------+
+9 rows in set (0.00 sec)
