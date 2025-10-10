@@ -1,0 +1,245 @@
+-- Cursor & Trigger
+
+
+delimiter // 
+create procedure show_cust() 
+begin
+	DECLARE finished int default 0;
+	DECLARE c_name varchar(100);
+	DECLARE cur_cust CURSOR FOR select name from customers;
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished=1;
+	OPEN cur_cust;
+	
+	read_cur : LOOP 
+		FETCH cur_cust INTO c_name;
+		IF finished=1 then
+			LEAVE read_cur;
+		END IF;
+	select concat(c_name," ","Customer of Shop.com") AS OUTPUT;
+	END LOOP;
+	CLOSE cur_cust;
+end //
+delimiter ;
+
+
+
+call show_cust();
+
+Each SELECT statement in a stored procedure sends its own result set to the client.
+So, if you loop 8 times, MySQL sends 8 separate result sets — one per row.
+-----------------------------------------------------------------------
+create table temp(str varchar(200));
+
+
+
+delimiter // 
+create procedure show_cust1() 
+begin
+	DECLARE finished int default 0;
+	DECLARE c_name varchar(100);
+	DECLARE cur_cust CURSOR FOR select name from customers;
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished=1;
+	OPEN cur_cust;
+	
+	read_cur : LOOP 
+		FETCH cur_cust INTO c_name;
+		IF finished=1 then
+			LEAVE read_cur;
+		END IF;
+	insert into temp values (c_name);
+	END LOOP;
+	select concat(str," ","Customer of Shop.com")AS output from temp;
+	CLOSE cur_cust;
+end //
+delimiter ;
+
+
+ call show_cust1();
+----------------------------------------------------------
+
+
+-- customers’ names who are from Mumbai by adding a prefix “Mr./Ms.” using a cursor.
+
+DELIMITER //
+
+CREATE PROCEDURE prefix_mumbai_customers()
+BEGIN
+  DECLARE done INT DEFAULT 0;
+  DECLARE c_id INT;
+  DECLARE c_name VARCHAR(80);
+
+  DECLARE cur CURSOR FOR
+  SELECT customer_id, name FROM customers WHERE city='Mumbai';
+
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+  OPEN cur;
+
+  city_loop: LOOP
+    FETCH cur INTO c_id, c_name;
+    IF done = 1 THEN
+      LEAVE city_loop;
+    END IF;
+
+    UPDATE customers SET name = CONCAT('Mr./Ms. ', c_name) WHERE customer_id = c_id;
+  END LOOP;
+
+  CLOSE cur;
+END //
+
+DELIMITER ;
+
+call prefix_mumbai_customers();
+
+select * from customers;
+
+---------------------------------
+
+
+DELIMITER //
+
+CREATE PROCEDURE prefix_mumbai_customers1()
+BEGIN
+  
+
+    UPDATE customers SET name = CONCAT('M. ',name) WHERE city ="MUMBAI";
+  
+END //
+
+DELIMITER ;
+
+-------------------------------------------------------------------------------------------
+
+* Trigger *
+-------------
+
+-------------- Insert (Before / After ) --------------------------
+
+create table logs(
+logs_id int auto_increment primary key,
+order_id int,
+customer_id int,
+action varchar(20),
+action_time timestamp Default current_timestamp 
+);
+
+
+delimiter //
+create trigger after_insert_order 
+after insert on orders 
+for each row
+begin 
+	insert into logs (order_id, customer_id, action) values 
+	(NEW.order_id, NEW.customer_id, "Order created");
+end;
+//
+delimiter ; 
+	
+
+
+delimiter //
+create trigger before_insert_order 
+before insert on orders 
+for each row
+begin 
+	insert into logs (order_id, customer_id, action) values 
+	(NEW.order_id, NEW.customer_id, "Order created");
+end;
+//
+delimiter ; 
+
+
+Select * from logs;
+
+-------------- update (Before / After ) --------------------------
+
+delimiter //
+create trigger Before_update_orders
+before update on orders
+for each row
+begin
+	insert into logs(order_id, customer_id, action)values 
+	(old.order_id, old.customer_id, concat(old.status," to ",new.status) );
+end;
+//
+delimiter ;
+   
+update orders set status="paid" where order_id=10;
+-------------------------------------------------------------
+
+
+-------------- Delete (Before / After ) --------------------------
+create table order_delete(
+order_id int,
+customer_id int,
+amount decimal(10,2),
+deleted_on timestamp default current_timestamp
+);
+
+
+delimiter //
+create trigger before_delete_order
+before delete on orders
+for each row
+begin 
+	insert into order_delete (order_id, customer_id, amount) values
+	(old.order_id, old.customer_id, old.amount);
+end ;
+//
+delimiter ;
+
+ delete from orders where order_id=13;
+
+
+select * from order_delete;
+----------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+==========================================================
+select * from customers;
++-------------+--------------+------------------+-----------+
+| customer_id | name         | email            | city      |
++-------------+--------------+------------------+-----------+
+|           1 | Amit Sharma  | amit@shop.com    | Mumbai    |
+|           2 | Bhavna Iyer  | bhavna@shop.com  | Pune      |
+|           3 | Chetan Rao   | chetan@shop.com  | Delhi     |
+|           4 | Divya Menon  | divya@shop.com   | Mumbai    |
+|           5 | Esha Khan    | esha@shop.com    | Bengaluru |
+|           6 | Mohini       | Mohini@gmail.com | Nagpur    |
+|           7 | Dhiraj Patil | Dhiraj@gmail.com | jalgoan   |
+|           8 | Mohit Sarode | Mohit@gmail.com  | jalgoan   |
++-------------+--------------+------------------+-----------+
+8 rows in set (0.00 sec)
+
+select * from orders;
++----------+-------------+------------+---------+-----------+
+| order_id | customer_id | order_date | amount  | status    |
++----------+-------------+------------+---------+-----------+
+|        1 |           1 | 2025-09-01 | 1200.00 | PAID      |
+|        2 |           1 | 2025-09-10 |  750.00 | PAID      |
+|        3 |           2 | 2025-09-11 |   99.00 | NEW       |
+|        4 |           3 | 2025-09-12 |  560.00 | CANCELLED |
+|        5 |           3 | 2025-09-20 | 2100.00 | PAID      |
+|        6 |           4 | 2025-09-25 |  300.00 | PAID      |
+|        7 |           5 | 2025-09-30 |  890.00 | NEW       |
+|        8 |           2 | 2025-10-01 |  450.00 | PAID      |
+|        9 |           5 | 2025-10-08 |  500.00 | PAID      |
++----------+-------------+------------+---------+-----------+
+9 rows in set (0.00 sec)

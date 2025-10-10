@@ -1,0 +1,32 @@
+-- procedure example 
+
+
+CREATE TABLE employees (
+    id bigint primary key auto_increment,
+    first_name varchar(100),
+    last_name varchar(100)
+);
+
+ CREATE TABLE birthdays (
+    emp_id bigint,
+    birthday date,
+    constraint foreign key (emp_id) references employees(id)
+);
+
+delimiter //
+CREATE procedure new_employee(
+    first char(100),
+    last char(100),
+    birthday date)
+BEGIN
+    INSERT INTO employees (first_name, last_name) VALUES (first, last);
+    SET @id = (SELECT last_insert_id());
+    INSERT INTO birthdays (emp_id, birthday) VALUES (@id, birthday);
+END;
+//
+delimiter ;
+
+call new_employee("ABC", "XYZ", "1980-02-03");
+SELECT * FROM birthdays;
+SELECT * FROM employees;
+
